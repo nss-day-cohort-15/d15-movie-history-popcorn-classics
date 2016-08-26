@@ -1,3 +1,36 @@
-h1{
-  color: red;
+.hidden{
+  display: none;
+}
+
+.login{
+  margin: auto;
+  margin-top: 10%;
+  width: 80%;
+  border: 2px solid black;
+  border-radius: 30px;
+
+  .login_nav{
+    margin-top: 2%;
+    margin-left: 20%;
+
+    .option{
+      margin-left: 7%;
+    }
+  }
+
+  .google_login{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 37.5%;
+  }
+
+  .login_info{
+    margin-left: 5%;
+    width: 90%;
+  }
+
+  .submit_login{
+    margin-bottom: 2%;
+    margin-left: 30%;
+  }
 }
