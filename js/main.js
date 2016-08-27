@@ -2,8 +2,8 @@
 
 // http:www.omdbapi.com/?s=Captain+America&r=json
 
-var $ = require('../bower_components/jquery/dist/jquery.min.js')
-var dom =require('./dom-builder')
+var $ = require('../bower_components/jquery/dist/jquery.min.js'),
+    dom =require('./dom-builder')
 
 // TEST MOVIE OBJECT
 var data = {
@@ -79,8 +79,9 @@ $('#unwatched').on('click', function(){
 
 dom.addToDom(data)
 $('.movie').on('click', function(){
-    console.log('click')
     $(this).remove()
+    $(this).addClass('newUnwatched')
     $('#unwatchedmovies').append(this)
+    // Materialize.toast('Movie added to unwatched list!', 4000)
 })
 

@@ -93,6 +93,17 @@ body{
     font-family: 'Exo', sans-serif;
   }
 
+  .newUnwatched{
+    border: 2px solid white;
+    background-color: black;
+    display: inline-block;
+    width: 31%;
+    height: 500px;
+    margin-left: 2%;
+    margin-top: 2%;
+    cursor: pointer;
+  }
+
   input.movieSearch{
     color: white;
     margin-top: -5%;
