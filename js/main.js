@@ -63,6 +63,17 @@ $('#home').on('click', function(){
 
   $('#home').addClass('active')
   $('#watched, #unwatched').removeClass('active')
+  $('.instruction').text('Click on a movie to add it to your unwatched list!')
+})
+
+$('#unwatched').on('click', function(){
+  $('#unwatchedmovies').show()
+  $('#watchedmovies').hide()
+  $('#homemovies').hide()
+
+  $('#unwatched').addClass('active')
+  $('#watched, #home').removeClass('active')
+  $('.instruction').text('Click a movie to add it to your watched list!')
 })
 
 $('#watched').on('click', function(){
@@ -73,21 +84,29 @@ $('#watched').on('click', function(){
   $('#watched').addClass('active')
   $('#home, #unwatched').removeClass('active')
 })
-
-$('#unwatched').on('click', function(){
-  $('#unwatchedmovies').show()
-  $('#watchedmovies').hide()
-  $('#homemovies').hide()
-
-  $('#unwatched').addClass('active')
-  $('#watched, #home').removeClass('active')
-})
-
+/////////////////////////////////////////////////////
+// ADDS MOVIES TO DOM
 dom.addToDom(data)
+// ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $('.movie').on('click', function(){
     $(this).remove()
+    $(this).removeClass('movie')
     $(this).addClass('newUnwatched')
     $('#unwatchedmovies').append(this)
     // Materialize.toast('Movie added to unwatched list!', 4000)
+
+    // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
+    $('.newUnwatched').on('click', function(){
+        $(this).remove()
+        $(this).addClass('newWatched')
+        $(this).removeClass('newUnwatched')
+        $(this).append(`<input class='rating' id='rating'
+            type='range' min='0' max='5'><span class='r_value'></span>`)
+        $('#watchedmovies').append(this)
+    })
+})
+
+$('.rating').on('input', function(){
+    $('#r_value').html($('.rating').val())
 })
 

@@ -1,71 +1,72 @@
 body{
   background-image: url('http://feelgrafix.com/data_images/out/15/894476-star-wars.jpg');
-.title{
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: -7%;
-  font-family: 'Exo', sans-serif;
-}
-
-.movie_title{
-  color: white;
-  text-align: center;
-  margin-bottom: -7%;
-  font-family: 'Exo', sans-serif;
-}
-
-.login{
-  text-align: center;
-  margin: auto;
-  margin-top: 10%;
-  width: 80%;
-  border: 3px solid red;;
-  border-radius: 30px;
-
-  .login_nav{
+  .title{
+    color: red;
+    font-weight: bold;
     text-align: center;
-    margin-top: 2%;
+    margin-bottom: -7%;
+    font-family: 'Exo', sans-serif;
+  }
 
-    .option{
-      color: white;
+  .movie_title{
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: -9%;
+    font-family: 'Exo', sans-serif;
+  }
+
+  .login{
+    text-align: center;
+    margin: auto;
+    margin-top: 10%;
+    width: 80%;
+    border: 3px solid red;;
+    border-radius: 30px;
+
+    .login_nav{
+      text-align: center;
+      margin-top: 2%;
+
+        .option{
+          color: white;
+          margin-top: 3%;
+          font-size: 1.5em;
+          padding-left: 3%;
+          margin-left: 5%;
+        }
+    }
+
+    .google_login{
+      margin-top: 5%;
+      margin-bottom: 5%;
+    }
+
+    .login_info{
       margin-top: 3%;
-      font-size: 1.5em;
-      padding-left: 3%;
       margin-left: 5%;
+      font-size: 1.2em;
+      width: 90%;
+
+      .email_form{
+        font-size: 1.4em;
+        color: white;
+      }
+
+      .password_form{
+        font-size: 1.4em;
+        color: white;
     }
   }
 
-  .google_login{
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-
-  .login_info{
-    margin-top: 3%;
-    margin-left: 5%;
-    font-size: 1.2em;
-    width: 90%;
-
-    .email_form{
-      font-size: 1.4em;
-      color: white;
+    .submit_login, .google_button{
+      margin-top: 3%;
+      border-radius: 20px;
+      border: 3px solid white;
+      margin-bottom: 3%;
     }
 
-    .password_form{
-      font-size: 1.4em;
-      color: white;
-    }
   }
-
-  .submit_login, .google_button{
-    margin-top: 3%;
-    border-radius: 20px;
-    border: 3px solid white;
-    margin-bottom: 3%;
-  }
-
-}
   .movie{
     border: 2px solid white;
     background-color: black;
@@ -103,6 +104,16 @@ body{
     font-family: 'Exo', sans-serif;
   }
 
+  .instruction{
+    display: inline-block;
+    margin-left: 23%;
+    font-size: 1.2em;
+    padding-bottom: -1%;
+    background-color: red;
+    color: black;
+    text-align: center;
+  }
+
   .newUnwatched{
     border: 2px solid white;
     background-color: black;
@@ -112,6 +123,53 @@ body{
     margin-left: 2%;
     margin-top: 2%;
     cursor: pointer;
+
+    .poster{
+      margin-left: 15%;
+      margin-top: 15%;
+      width: 70%;
+      height: 325px;
+    }
+  }
+
+  .newUnwatched:hover{
+    border: 2px solid red;
+  }
+
+  .newWatched{
+    border: 2px solid white;
+    background-color: black;
+    display: inline-block;
+    width: 31%;
+    height: 500px;
+    margin-left: 2%;
+    margin-top: 2%;
+    cursor: pointer;
+
+    .poster{
+      margin-left: 15%;
+      margin-top: 10%;
+      width: 70%;
+      height: 325px;
+    }
+
+    .rating{
+      display: inline-block;
+      width: 60%;
+      margin-left: 7%;
+
+    }
+  }
+
+  .r_value{
+    margin-left: 0;
+    color: white;
+    background-color: white;
+    z-index: 5;
+  }
+
+  .newWatched:hover{
+    border: 2px solid red;
   }
 
   input.movieSearch{
@@ -134,18 +192,23 @@ body{
     .view{
       color: black;
       margin-left: 5%;
+      vertical-align: middle;
       font-size: 1.3em;
       font-weight: bolder;
     }
 
     .view:hover{
-      color: white;
-      text-decoration: none;
+      text-decoration: underline;
     }
 
     .active{
       color: white;
       text-decoration: underline;
     }
+  }
+  .example{
+    color: white;
+    z-index: 5;
+    font-size: 5em;
   }
 }
