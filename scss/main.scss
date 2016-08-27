@@ -1,36 +1,125 @@
-.hidden{
-  display: none;
+body{
+  background-image: url('http://feelgrafix.com/data_images/out/15/894476-star-wars.jpg');
+.title{
+  color: white;
+  text-align: center;
+  margin-bottom: -7%;
+  font-family: 'Exo', sans-serif;
 }
-
 .login{
+  text-align: center;
   margin: auto;
   margin-top: 10%;
   width: 80%;
-  border: 2px solid black;
+  border: 3px solid white;
   border-radius: 30px;
 
   .login_nav{
+    text-align: center;
     margin-top: 2%;
-    margin-left: 20%;
 
     .option{
-      margin-left: 7%;
+      color: white;
+      margin-top: 3%;
+      font-size: 1.5em;
+      padding-left: 3%;
+      margin-left: 5%;
     }
   }
 
   .google_login{
     margin-top: 5%;
     margin-bottom: 5%;
-    margin-left: 37.5%;
   }
 
   .login_info{
+    margin-top: 3%;
     margin-left: 5%;
+    font-size: 1.2em;
     width: 90%;
+
+    .email_form{
+      font-size: 1.4em;
+      color: white;
+    }
+
+    .password_form{
+      font-size: 1.4em;
+      color: white;
+    }
   }
 
   .submit_login{
-    margin-bottom: 2%;
-    margin-left: 30%;
+    margin-top: 3%;
+    border-radius: 20px;
+    border: 3px solid white;
+    margin-bottom: 3%;
+  }
+}
+  .movie{
+    border: 2px solid white;
+    background-color: black;
+    display: inline-block;
+    width: 31%;
+    height: 500px;
+    margin-left: 2%;
+    margin-top: 2%;
+    cursor: pointer;
+
+    .poster{
+      margin-left: 15%;
+      margin-top: 15%;
+      width: 70%;
+      height: 325px;
+    }
+  }
+
+  .movie:hover{
+    border: 2px solid red;
+  }
+
+  .year{
+    color: red;
+    font-weight: bolder;
+    font-size: 1.2em;
+    margin-left: 7%;
+    margin-top: 3%;
+  }
+
+  .afterTitle{
+    color: red;
+    margin-bottom: -7%;
+    display: inline-block;
+    font-family: 'Exo', sans-serif;
+  }
+
+  input.movieSearch{
+    color: white;
+    margin-top: -5%;
+    margin-left: 35%;
+    display: inline-block;
+    width: 20%;
+  }
+
+  .logout{
+    color: white;
+    margin-left: 5%;
+  }
+
+  .userNav{
+    background-color: red;
+    border-radius: 20px;
+
+    .view{
+      color: black;
+      margin-left: 5%;
+      font-size: 1.3em;
+      font-weight: bolder;
+    }
+
+    .view:hover{
+      color: white;
+      text-decoration: none;
+    }
   }
 }
