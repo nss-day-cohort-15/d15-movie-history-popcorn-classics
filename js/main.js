@@ -78,3 +78,9 @@ $('#unwatched').on('click', function(){
 })
 
 dom.addToDom(data)
+$('.movie').on('click', function(){
+    console.log('click')
+    $(this).remove()
+    $('#unwatchedmovies').append(this)
+})
+
