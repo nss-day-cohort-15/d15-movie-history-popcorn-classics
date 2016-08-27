@@ -8,7 +8,7 @@ function addToDom(data){
   var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
 
   var movie = `<div class='movie'>${title}${poster}${year}</div>`
-  $('#movies').append(movie)
+  $('#homemovies').append(movie)
 }
 }
 

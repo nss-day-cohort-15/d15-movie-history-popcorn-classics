@@ -5,6 +5,7 @@
 var $ = require('../bower_components/jquery/dist/jquery.min.js')
 var dom =require('./dom-builder')
 
+// TEST MOVIE OBJECT
 var data = {
   "Search": [
     {
@@ -31,6 +32,7 @@ var data = {
   ]
 }
 
+// HOME LOGIN AREA EVENTS
 $('#google_login').hide()
 $('.loginPage').hide()
 
@@ -42,6 +44,37 @@ $('#google').on('click', function(){
 $('#email').on('click', function(){
   $('#login_info').show()
   $('#google_login').hide()
+})
+
+// AFTER LOGIN SPA PAGE EVENTS
+$('#watchedmovies').hide()
+$('#unwatchedmovies').hide()
+
+$('#home').on('click', function(){
+  $('#homemovies').show()
+  $('#watchedmovies').hide()
+  $('#unwatchedmovies').hide()
+
+  $('#home').addClass('active')
+  $('#watched, #unwatched').removeClass('active')
+})
+
+$('#watched').on('click', function(){
+  $('#watchedmovies').show()
+  $('#homemovies').hide()
+  $('#unwatchedmovies').hide()
+
+  $('#watched').addClass('active')
+  $('#home, #unwatched').removeClass('active')
+})
+
+$('#unwatched').on('click', function(){
+  $('#unwatchedmovies').show()
+  $('#watchedmovies').hide()
+  $('#homemovies').hide()
+
+  $('#unwatched').addClass('active')
+  $('#watched, #home').removeClass('active')
 })
 
 dom.addToDom(data)

@@ -96,7 +96,7 @@ body{
   input.movieSearch{
     color: white;
     margin-top: -5%;
-    margin-left: 35%;
+    margin-left: 30%;
     display: inline-block;
     width: 20%;
   }
@@ -120,6 +120,11 @@ body{
     .view:hover{
       color: white;
       text-decoration: none;
+    }
+
+    .active{
+      color: white;
+      text-decoration: underline;
     }
   }
 }
