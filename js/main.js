@@ -31,10 +31,16 @@ var data = {
     }
   ]
 }
-
-// HOME LOGIN AREA EVENTS
-$('#google_login').hide()
+/* USE TO TOGGLE VIEWS BETWEEN PAGES WHILE TESTING
+    UNCOMMENT ONE TO SEE THE OTHER
+    EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
+    AFTERLOGIN TO SEE AFTER LOGIN*/
 $('.loginPage').hide()
+// $('.afterLogin').hide()
+///////////////////////////////////////////////////
+
+// HOME LOGIN AREA EVENTS ////////////////
+$('#google_login').hide()
 
 $('#google').on('click', function(){
   $('#google_login').show()
@@ -45,7 +51,7 @@ $('#email').on('click', function(){
   $('#login_info').show()
   $('#google_login').hide()
 })
-
+/////////////////////////////////////////
 // AFTER LOGIN SPA PAGE EVENTS
 $('#watchedmovies').hide()
 $('#unwatchedmovies').hide()

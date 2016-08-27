@@ -1,17 +1,26 @@
 body{
   background-image: url('http://feelgrafix.com/data_images/out/15/894476-star-wars.jpg');
 .title{
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: -7%;
+  font-family: 'Exo', sans-serif;
+}
+
+.movie_title{
   color: white;
   text-align: center;
   margin-bottom: -7%;
   font-family: 'Exo', sans-serif;
 }
+
 .login{
   text-align: center;
   margin: auto;
   margin-top: 10%;
   width: 80%;
-  border: 3px solid white;
+  border: 3px solid red;;
   border-radius: 30px;
 
   .login_nav{
@@ -49,12 +58,13 @@ body{
     }
   }
 
-  .submit_login{
+  .submit_login, .google_button{
     margin-top: 3%;
     border-radius: 20px;
     border: 3px solid white;
     margin-bottom: 3%;
   }
+
 }
   .movie{
     border: 2px solid white;
