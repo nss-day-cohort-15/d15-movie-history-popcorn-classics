@@ -3,8 +3,9 @@
 // http:www.omdbapi.com/?s=Captain+America&r=json
 
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
-    dom =require('./dom-builder')
-
+    dom =require('./dom-builder'),
+    api = require('./api-interactions'),
+    userid
 // TEST MOVIE OBJECT
 var data = {
   "Search": [
@@ -88,31 +89,65 @@ $('#watched').on('click', function(){
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
 
+function options(){
+  var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
+
+  return destroy
+}
+
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $('.movie').on('click', function(){
-    $(this).remove()
-    $(this).removeClass('movie')
-    $(this).addClass('newUnwatched')
-    $('#unwatchedmovies').append(this)
-    // Materialize.toast('Movie added to unwatched list!', 4000)
+  $(this).remove()
+  $(this).removeClass('movie')
+  $(this).addClass('newUnwatched')
+  $(this).prepend(options())
 
+  $('#unwatchedmovies').append(this)
+
+  $('.delete').on('click', function(){
+    $(this).parent().remove()
+      // Materialize.toast('Movie added to unwatched list!', 4000)
+  })
+  // CREATES OBJECT BASED ON THE MOVIE CLICKED
+  var title = $(this).children('.movie_title').text()
+  var poster = $(this).children('.poster').attr('src')
+  var year = $(this).children('.year').text()
+  buildObject(title, poster, year)
+  // api.addUnwatchedMovie(buildObject())
+  ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
-    $('.newUnwatched').on('click', function(){
-        $(this).remove()
-        $(this).addClass('newWatched')
-        $(this).removeClass('newUnwatched')
-        $(this).append(`<input class='rating' id='rating'
-            type='range' min='0' max='5'><span class='r_value'>0</span>`)
+  $('.newUnwatched').on('click', function(){
+    $(this).remove()
+    $(this).addClass('newWatched')
+    $(this).removeClass('newUnwatched')
+    var x = `<input class='rating' id='rating'
+      type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
+    // Materialize.toast('Movie added to watched list!', 4000)
+    $(this).append(x)
+    $('#watchedmovies').append(this)
+      //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
 
-        $('#watchedmovies').append(this)
+    $('.delete').on('click', function(){
+      $(this).parent().remove()
     })
+    //USED FOR RATING VALUE
+    $('#rating').on('input', function(){
+      $('.r_value').html($('#rating').val())
+    })
+  })
 })
 
-    // $('#rating').on('input', function(){
-    //     var rate = $('#r_value')
-    //     var value = $('#rating').val()
-    //     rate.append(value)
-    // })
+function buildObject(t, p, y){
+  var songObj = {
+    title: t,
+    poster: p,
+    year: y,
+    rating: "",
+    userid: userid
+  }
+  console.log(songObj)
+  return songObj
+}
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){
