@@ -89,6 +89,21 @@ $('#watched').on('click', function(){
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
 
+//PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
+
+//////////////
+
+function buildObject(t, p, y){
+  let songObj = {
+    title: t,
+    poster: p,
+    year: y,
+    rating: "",
+    userid: userid
+  }
+  return songObj
+}
+
 function options(){
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
   return destroy
@@ -103,30 +118,39 @@ $('.movie').on('click', function(){
   $('#unwatchedmovies').append(this)
 
   $('.delete').on('click', function(){
+    // Materialize.toast('Movie added to unwatched list!', 4000)
     $(this).parent().remove()
-      // Materialize.toast('Movie added to unwatched list!', 4000)
+    //DELETE ELEMENT FROM UNWATCHED FIREBASE LIST PROMISE
+    // GOES HERE///////////////////////
   })
   // CREATES OBJECT BASED ON THE MOVIE CLICKED
   var title = $(this).children('.movie_title').text()
   var poster = $(this).children('.poster').attr('src')
   var year = $(this).children('.year').text()
-  buildObject(title, poster, year)
-  // api.addUnwatchedMovie(buildObject())
+
+  console.log(title, poster, year)
+  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+  api.addUnwatchedMovie(buildObject(title, poster, year))
 })
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $('.unwatchedmovies').on('click', "div", function(){
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
-  var x = `<input class='rating' id='rating'
+  var rate = `<input class='rating' id='rating'
     type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
   // Materialize.toast('Movie added to watched list!', 4000)
-  $(this).append(x)
-  $('#watchedmovies').append(this)
+  $(this).append(rate)
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
+  $('#watchedmovies').append(this)
+
+  //PROMISE TO ADD TO FIREBASE WATCHED MOVIES TABLE GOES HERE
+/////////////////
 
   $('.delete').on('click', function(){
     $(this).parent().remove()
+  //DELETE ELEMENT FROM WATCHED FIREBASE LIST PROMISE
+    // GOES HERE
   })
   //USED FOR RATING VALUE
   $('#rating', this).on('input', function(){
@@ -134,17 +158,6 @@ $('.unwatchedmovies').on('click', "div", function(){
   })
 })
 
-function buildObject(t, p, y){
-  var songObj = {
-    title: t,
-    poster: p,
-    year: y,
-    rating: "",
-    userid: userid
-  }
-  console.log(songObj)
-  return songObj
-}
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){

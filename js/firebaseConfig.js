@@ -1,9 +1,9 @@
 "use strict"
 
-let firebase = require('firebase/app'),
+let firebase = require('../lib/node_modules/firebase/app'),
     fb = require('./fb-getter')
 
-require('firebase/auth')
+require('../lib/node_modules/firebase/auth')
 
 var config = {
   apiKey: fb.key,
