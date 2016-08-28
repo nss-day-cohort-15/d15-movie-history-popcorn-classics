@@ -176,7 +176,9 @@ $("#google_login").click(function() {
     let user = result.user;
     console.log('USER ID IS THIS LONG THING', user.uid);
     userid = user.uid;
-    $('loginPage').hide();
+    $('.loginPage').hide();
+    $('.afterLogin').show();
+
     // var token = result.credential.accessToken;
   })
 
