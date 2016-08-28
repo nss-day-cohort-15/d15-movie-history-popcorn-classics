@@ -3,6 +3,7 @@
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     firebase = require('./firebaseConfig')
 
+//API TEST TO PROVE CORRECT CONFIGURATION
 function addUnwatchedMovie(obj){
   return new Promise(function(resolve, reject){
     $.ajax({
