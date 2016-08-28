@@ -5,7 +5,8 @@
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
-    userid
+    login = require('./user'),
+    userid = ""
 // TEST MOVIE OBJECT
 var data = {
   "Search": [
@@ -36,8 +37,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-$('.loginPage').hide()
-// $('.afterLogin').hide()
+// $('.loginPage').hide()
+$('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -52,6 +53,7 @@ $('#email').on('click', function(){
   $('#login_info').show()
   $('#google_login').hide()
 })
+
 /////////////////////////////////////////
 // AFTER LOGIN SPA PAGE EVENTS
 $('#watchedmovies').hide()
@@ -99,7 +101,7 @@ function buildObject(t, p, y){
     poster: p,
     year: y,
     rating: "",
-    userid: userid
+    uid: userid
   }
   return songObj
 }
@@ -165,3 +167,17 @@ function convertString(string){
     return replaced
 }
 
+// Google Login
+
+$("#google_login").click(function() {
+  console.log("clicked auth");
+  login()
+  .then(function(result){
+    let user = result.user;
+    console.log('USER ID IS THIS LONG THING', user.uid);
+    userid = user.uid;
+    $('loginPage').hide();
+    // var token = result.credential.accessToken;
+  })
+
+});

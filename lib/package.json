@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 {
   "name": "firebase-omdb",
   "version": "1.0.0",
-=======
-
-{
-  "name": "firebase-omdb",
-  "version": "0.1.0",
->>>>>>> 2b6214cb1858a976c205417fbb0d2c270282b82e
   "devDependencies": {
     "browserify": "^13.0.0",
     "grunt": "^0.4.5",
