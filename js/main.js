@@ -87,6 +87,7 @@ $('#watched').on('click', function(){
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
+
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $('.movie').on('click', function(){
     $(this).remove()
@@ -101,12 +102,20 @@ $('.movie').on('click', function(){
         $(this).addClass('newWatched')
         $(this).removeClass('newUnwatched')
         $(this).append(`<input class='rating' id='rating'
-            type='range' min='0' max='5'><span class='r_value'></span>`)
+            type='range' min='0' max='5'><span class='r_value'>0</span>`)
+
         $('#watchedmovies').append(this)
     })
 })
 
-$('.rating').on('input', function(){
-    $('#r_value').html($('.rating').val())
-})
+    // $('#rating').on('input', function(){
+    //     var rate = $('#r_value')
+    //     var value = $('#rating').val()
+    //     rate.append(value)
+    // })
 
+// CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
+function convertString(string){
+    var replaced = string.split(' ').join('+').toLowerCase()
+    return replaced
+}
