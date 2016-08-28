@@ -40,7 +40,7 @@ $('.loginPage').hide()
 // $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
-// HOME LOGIN AREA EVENTS ////////////////
+// HOME LOGIN AREA SPA EVENTS ////////////////
 $('#google_login').hide()
 
 $('#google').on('click', function(){
@@ -91,10 +91,8 @@ dom.addToDom(data)
 
 function options(){
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
-
   return destroy
 }
-
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $('.movie').on('click', function(){
   $(this).remove()
@@ -114,26 +112,25 @@ $('.movie').on('click', function(){
   var year = $(this).children('.year').text()
   buildObject(title, poster, year)
   // api.addUnwatchedMovie(buildObject())
+})
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
-  $('.newUnwatched').on('click', function(){
-    $(this).remove()
-    $(this).addClass('newWatched')
-    $(this).removeClass('newUnwatched')
-    var x = `<input class='rating' id='rating'
-      type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
-    // Materialize.toast('Movie added to watched list!', 4000)
-    $(this).append(x)
-    $('#watchedmovies').append(this)
-      //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
+$('.unwatchedmovies').on('click', "div", function(){
+  $(this).addClass('newWatched')
+  $(this).removeClass('newUnwatched')
+  var x = `<input class='rating' id='rating'
+    type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
+  // Materialize.toast('Movie added to watched list!', 4000)
+  $(this).append(x)
+  $('#watchedmovies').append(this)
+    //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
 
-    $('.delete').on('click', function(){
-      $(this).parent().remove()
-    })
-    //USED FOR RATING VALUE
-    $('#rating').on('input', function(){
-      $('.r_value').html($('#rating').val())
-    })
+  $('.delete').on('click', function(){
+    $(this).parent().remove()
+  })
+  //USED FOR RATING VALUE
+  $('#rating').on('input', function(){
+    $('.r_value').html($('#rating').val())
   })
 })
 
