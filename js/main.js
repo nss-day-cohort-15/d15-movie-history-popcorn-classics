@@ -36,8 +36,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-$('.loginPage').hide()
-// $('.afterLogin').hide()
+// $('.loginPage').hide()
+$('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
