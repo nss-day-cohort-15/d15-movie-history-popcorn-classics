@@ -2,19 +2,63 @@
 <html>
 <head>
   <title>Movie History</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/bower_components/materialize/dist/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" href="/bower_components/rateYo/min/jquery.rateyo.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-  <div class="container">
-  <h1>Movie History</h1>
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="/bower_components/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
-  <script src='/bower_components/materialize/dist/js/materialize.min.js'></script>
-  <script src='/bower_components/rateYo/src/jquery.rateyo.js'></script>
-  <script src="dist/app.js"></script>
+  <div class="container loginPage">
+    <h1 class="title" id="title">Popcorn Classics</h1>
+    <div class="login" id="login">
+      <div class="login_nav">
+        <a href='#'><span class="email option" id="email">Login with Email</span></a>
+        <a href='#'><span class="google option" id="google">Login with Google</span></a>
+      </div>
+
+      <form class="login_info" id="login_info">
+        <input type='text' class="email_form " placeholder="Email:">
+        <input type="text" class="password_form" id="password" placeholder="Password:">
+        <input type="button" id="submit_login" class="submit_login" value="Login or Create New User">
+      </form>
+
+      <div class="google_login" id="google_login">
+        <input type="button" id="google_button" class="google_button" value="Login with Google">
+      </div>
+    </div>
   </div>
+
+  <div class="afterLogin container">
+    <div class="topBar">
+      <h3 class="afterTitle">Popcorn Classics</h3>
+      <input type="text" id="movieSearch" class="movieSearch" placeholder="Movie Search: ">
+      <a href="#"><span class="logout" id="logout">Logout</span></a>
+    </div>
+    <div class="userNav">
+      <a href="#"><span class="home view active" id="home">Home</span></a>
+      <a href="#"><span class="unwatched view" id="unwatched">Unwatched</span></a>
+      <a href="#"><span class="watched view" id="watched">Watched</span></a>
+      <p class="instruction">Click on a movie to add it to your unwatched list!</p>
+    </div>
+
+    <div class="homemovies" id="homemovies"></div>
+
+    <div class="unwatchedmovies" id="unwatchedmovies"></div>
+
+    <div class="watchedmovies" id="watchedmovies"></div>
+  </div>
+
+  <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+  <script src='./bower_components/materialize/dist/js/materialize.min.js'></script>
+
+  <script src="./bower_components/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
+
+
+  <script src='./bower_components/rateYo/src/jquery.rateyo.js'></script>
+
+  <script src="dist/app.js"></script>
 </body>
 </html>
