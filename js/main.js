@@ -64,7 +64,7 @@ $('#home').on('click', function(){
 
   $('#home').addClass('active')
   $('#watched, #unwatched').removeClass('active')
-  $('.instruction').text('Click on a movie to add it to your unwatched list!')
+  $('.instruction').text('Click on a movie to save it to your unwatched list!')
 })
 
 $('#unwatched').on('click', function(){
@@ -74,7 +74,7 @@ $('#unwatched').on('click', function(){
 
   $('#unwatched').addClass('active')
   $('#watched, #home').removeClass('active')
-  $('.instruction').text('Click a movie to add it to your watched list!')
+  $('.instruction').text('Click a movie to save it to your watched list!')
 })
 
 $('#watched').on('click', function(){
@@ -92,7 +92,7 @@ dom.addToDom(data)
 //PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
 
 //////////////
-
+// USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
 function buildObject(t, p, y){
   let songObj = {
     title: t,
@@ -103,7 +103,7 @@ function buildObject(t, p, y){
   }
   return songObj
 }
-
+// CREATES DELETE BUTTON
 function options(){
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
   return destroy
@@ -130,7 +130,7 @@ $('.movie').on('click', function(){
 
   console.log(title, poster, year)
   //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-  api.addUnwatchedMovie(buildObject(title, poster, year))
+  // api.addUnwatchedMovie(buildObject(title, poster, year))
 })
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
