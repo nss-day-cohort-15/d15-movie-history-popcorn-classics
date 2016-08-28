@@ -5,7 +5,9 @@
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
+    login = require('./user'),
     userid
+
 // TEST MOVIE OBJECT
 var data = {
   "Search": [
@@ -36,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-$('.loginPage').hide()
-// $('.afterLogin').hide()
+// $('.loginPage').hide()
+$('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -85,6 +87,21 @@ $('#watched').on('click', function(){
   $('#watched').addClass('active')
   $('#home, #unwatched').removeClass('active')
 })
+//GOOGLE LOGIN
+$("#google_login").on('click', function() {
+  console.log("clicked auth");
+  login()
+  .then(function(result){
+    let user = result.user;
+    console.log('USER ID IS THIS LONG THING', user.uid);
+    userid = user.uid;
+    $('.loginPage').hide();
+    $('.afterLogin').show();
+
+    // var token = result.credential.accessToken;
+  })
+
+});
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
@@ -101,6 +118,7 @@ function buildObject(t, p, y){
     rating: "",
     userid: userid
   }
+  console.log(songObj)
   return songObj
 }
 // CREATES DELETE BUTTON
@@ -130,7 +148,7 @@ $('.movie').on('click', function(){
 
   console.log(title, poster, year)
   //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-  // api.addUnwatchedMovie(buildObject(title, poster, year))
+  api.addUnwatchedMovie(buildObject(title, poster, year))
 })
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
@@ -158,9 +176,9 @@ $('.unwatchedmovies').on('click', "div", function(){
   })
 })
 
-
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){
     var replaced = string.split(' ').join('+').toLowerCase()
     return replaced
 }
+
