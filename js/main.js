@@ -129,8 +129,8 @@ $('.unwatchedmovies').on('click', "div", function(){
     $(this).parent().remove()
   })
   //USED FOR RATING VALUE
-  $('#rating').on('input', function(){
-    $('.r_value').html($('#rating').val())
+  $('#rating', this).on('input', function(){
+    $(this).next().next().html($('#rating', this).children().context.value)
   })
 })
 
