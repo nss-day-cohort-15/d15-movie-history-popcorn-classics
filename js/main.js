@@ -1,9 +1,10 @@
 "use strict";
-
+console.log("LIVE")
 // http:www.omdbapi.com/?s=Captain+America&r=json
 
-var $ = require('../bower_components/jquery/dist/jquery.min.js'),
-    dom =require('./dom-builder')
+let $ = require('../bower_components/jquery/dist/jquery.min.js'),
+    dom =require('./dom-builder'),
+    movie = require('./api-interactions')
 
 // TEST MOVIE OBJECT
 var data = {
@@ -91,3 +92,5 @@ $('.movie').on('click', function(){
     // Materialize.toast('Movie added to unwatched list!', 4000)
 })
 
+movie.searchMovie()
+movie.addMovie()
