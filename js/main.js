@@ -38,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-// $('.loginPage').hide()
-$('.afterLogin').hide()
+$('.loginPage').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -102,6 +102,7 @@ $("#google_login").on('click', function() {
   })
 
 });
+
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
@@ -164,7 +165,6 @@ $('.unwatchedmovies').on('click', "div", function(){
 
   //PROMISE TO ADD TO FIREBASE WATCHED MOVIES TABLE GOES HERE
 /////////////////
-
   $('.delete').on('click', function(){
     $(this).parent().remove()
   //DELETE ELEMENT FROM WATCHED FIREBASE LIST PROMISE
@@ -175,6 +175,17 @@ $('.unwatchedmovies').on('click', "div", function(){
     $(this).next().next().html($('#rating', this).children().context.value)
   })
 })
+//MOVIE SEARCH PROMISE
+$('#movieSearch').keypress(function(e) {
+  if(e.which == 13) {
+    $('div#homemovies').html("")
+    var input = $('#movieSearch').val()
+    api.searchMovie(convertString(input))
+      .then(function(data){
+        dom.addToDom(data)
+      })
+  }
+});
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){
