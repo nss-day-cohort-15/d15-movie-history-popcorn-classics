@@ -38,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-// $('.loginPage').hide()
-$('.afterLogin').hide()
+$('.loginPage').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -150,7 +150,7 @@ function movieEvents(){
 
     console.log(title, poster, year)
     //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-    api.addUnwatchedMovie(buildObject(title, poster, year))
+    // api.addUnwatchedMovie(buildObject(title, poster, year))
   })
 }
   ///////////////////////////////////////////////
@@ -158,10 +158,15 @@ function movieEvents(){
 $('.unwatchedmovies').on('click', "div", function(){
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
-  var rate = `<input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
+  var rate = `<div class="row rating">
+<span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span>
+</div>`
   // Materialize.toast('Movie added to watched list!', 4000)
   $(this).append(rate)
+
+  $.each(".rating"){
+
+  } 
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
   $('#watchedmovies').append(this)
 
@@ -182,7 +187,7 @@ $('.unwatchedmovies').on('click', "div", function(){
   let year = $(this).find('.year').text()
 
   console.log(title, poster, year)
-  api.addWatchedMovie(buildObject(title, poster, year))
+  // api.addWatchedMovie(buildObject(title, poster, year))
 })
 //MOVIE SEARCH PROMISE
 $('#movieSearch').keypress(function(e) {
