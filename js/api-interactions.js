@@ -7,11 +7,11 @@ let $ = require('../bower_components/jquery/dist/jquery.min.js'),
     return new Promise(function(resolve, reject){
       title = $(".movieSearch").val();
     $.ajax({
-        url: `http://www.omdbapi.com/?t=${title}&y=&plot=short&r=json`
+        url: `http://www.omdbapi.com/?s=${title}&y=&plot=short&r=json`
     }).done(function(data){
-      let movieData = [data.Title, data.Year, data.Actors]
-        resolve(movieData)
-        console.log(movieData);
+      console.log(data)
+      // let movieData = [data.Title, data.Year, data.Actors]
+        resolve(data)
       }).fail(function(error){
         reject(error);
         });
@@ -22,7 +22,7 @@ let $ = require('../bower_components/jquery/dist/jquery.min.js'),
 function addUnwatchedMovie(obj){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/unwatched.json',
+      url: 'https://popcorn-classics.firebaseio.com/trackedMovies.json',
       type: 'POST',
       data: JSON.stringify(obj),
       dataType: 'json'
@@ -35,7 +35,7 @@ function addUnwatchedMovie(obj){
 function addWatchedMovie(obj){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/watched.json',
+      url: 'https://popcorn-classics.firebaseio.com/trackedMovies.json',
       type: 'POST',
       data: JSON.stringify(obj),
       dataType: 'json'
@@ -58,10 +58,12 @@ function addWatchedMovie(obj){
 //         });
 //   });//end of promise;
 // };
+
+//https://popcorn-classics.firebaseio.com/unwatched/    (movie id) -KQIh20TiQ_sbqU0rFFD.json
 let deleteMovie = function(movieId){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/movies/json', // this is the wrong url
+      url: 'https://popcorn-classics.firebaseio.com/watched.json', // this is the wrong url
       type: 'DELETE'
     }).done(function(movieData){
         resolve(movieData);

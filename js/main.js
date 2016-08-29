@@ -7,37 +7,37 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     login = require('./user'),
     userid = ""
 // TEST MOVIE OBJECT
-var data = {
-  "Search": [
-    {
-      "Title": "Captain America: The First Avenger",
-      "Year": "2011",
-      "imdbID": "tt0458339",
-      "Type": "movie",
-      "Poster": "http://cdn.playbuzz.com/cdn/8ace370e-0453-4890-8fea-995f32ac9530/5efa0fd9-4850-47d4-814b-af367ab3f973.jpg"
-    },
-    {
-      "Title": "Captain America: The Winter Soldier",
-      "Year": "2014",
-      "imdbID": "tt1843866",
-      "Type": "movie",
-      "Poster": "http://deeragaming.net/wp-content/uploads/2014/03/Bucky-Barnes-winter-soldier-image-bucky-barnes-winter-soldier-36483025-1200-1800.png"
-    },
-    {
-      "Title": "Captain America: Civil War",
-      "Year": "2016",
-      "imdbID": "tt3498820",
-      "Type": "movie",
-      "Poster": "https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
-    }
-  ]
-}
+// var data = {
+//   "Search": [
+//     {
+//       "Title": "Captain America: The First Avenger",
+//       "Year": "2011",
+//       "imdbID": "tt0458339",
+//       "Type": "movie",
+//       "Poster": "http://cdn.playbuzz.com/cdn/8ace370e-0453-4890-8fea-995f32ac9530/5efa0fd9-4850-47d4-814b-af367ab3f973.jpg"
+//     },
+//     {
+//       "Title": "Captain America: The Winter Soldier",
+//       "Year": "2014",
+//       "imdbID": "tt1843866",
+//       "Type": "movie",
+//       "Poster": "http://deeragaming.net/wp-content/uploads/2014/03/Bucky-Barnes-winter-soldier-image-bucky-barnes-winter-soldier-36483025-1200-1800.png"
+//     },
+//     {
+//       "Title": "Captain America: Civil War",
+//       "Year": "2016",
+//       "imdbID": "tt3498820",
+//       "Type": "movie",
+//       "Poster": "https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
+//     }
+//   ]
+// }
 /* USE TO TOGGLE VIEWS BETWEEN PAGES WHILE TESTING
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-// $('.loginPage').hide()
-$('.afterLogin').hide()
+$('.loginPage').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -103,19 +103,20 @@ $("#google_login").on('click', function() {
 
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
-dom.addToDom(data)
+// dom.addToDom(data)
 
 //PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
 
 //////////////
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
-function buildObject(t, p, y){
+function buildObject(t, p, y, boo){
   let songObj = {
     title: t,
     poster: p,
     year: y,
     rating: "",
-    userid: userid
+    userid: userid,
+    watched: false
   }
   console.log(songObj)
   return songObj
@@ -189,6 +190,7 @@ $('#movieSearch').keypress(function(e) {
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
       .then(function(data){
+        console.log(data.Search)
         dom.addToDom(data)
         movieEvents()
       })
@@ -202,6 +204,6 @@ function convertString(string){
 }
 
 api.searchMovie()
-api.addWatchedMovie()
-api.addUnwatchedMovie()
+// api.addWatchedMovie()
+// api.addUnwatchedMovie()
 movieEvents()
