@@ -16,12 +16,12 @@ function addToDom(data){
   }
 
   for(var i =0; i < times; i++){
-    console.log(data)
     var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
     var poster = `<img src='${data.Search[i].Poster}' class='poster'>`
     var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
+    var add = `<p><a href='#' class='add' id='add'>Add to watchlist</a></p>`
 
-    var movie = `<div class='movie'>${title}${poster}${year}</div>`
+    var movie = `<div class='movie'>${title}${poster}${year}${add}</div>`
     $('#homemovies').append(movie)
   // $('#homemovies').append(entryTemplate(entryData))
   }
