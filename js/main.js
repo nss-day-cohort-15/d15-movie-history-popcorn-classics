@@ -6,7 +6,10 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
     login = require('./user'),
-    userid = ""
+    logOutGoogle = require('./user'),
+    logInEmail = require('./user'),
+    newEmailUser = require('./user'),
+    userid = "";
 
 // TEST MOVIE OBJECT
 var data = {
@@ -98,12 +101,38 @@ $("#google_login").on('click', function() {
     userid = user.uid;
     $('.loginPage').hide();
     $('.afterLogin').show();
-
     // var token = result.credential.accessToken;
   })
-
 });
+ // GOOGLE LOGOUT
+$('#logout').on('click', function(){
+  logOutGoogle()
+  console.log('user has logged out')
+})
 
+// EMAIL SIGNUP
+$('#register').on('click', function(){
+  newEmailUser()
+  .then(function(result){
+    let user = result.user;
+    console.log('USER ID IS THIS LONG THING', user.uid);
+    userid = user.uid;
+    $('.loginPage').hide();
+    $('.afterLogin').show();
+  })
+})
+
+// RETURNING USER LOGIN
+$('#submit_login').on('click', function(){
+  logInEmail()
+  .then(function(result){
+    let user = result.user;
+    console.log('USER ID IS THIS LONG THING', user.uid);
+    userid = user.uid;
+    $('.loginPage').hide();
+    $('.afterLogin').show();
+  })
+})
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
@@ -205,55 +234,6 @@ function convertString(string){
 }
 
 
-// Google Login
-
-$("#google_login").click(function() {
-  console.log("clicked auth");
-  login()
-  .then(function(result){
-    console.log(result)
-    let user = result.user;
-    console.log('USER ID IS THIS LONG THING', user.uid);
-    userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
-  })
-
-});
-
-// $("#register").click(function() {
-//   console.log("clicked register");
-//   login()
-//     .then( function(result){
-//       console.log(result);
-//       let user = result.user;
-//       userid = user.uid
-//       $('.loginPage').hide();
-//       $('.afterLogin').show();
-//     })
-//     .catch(function(error){
-//         console.log(error);
-//     });
-// });
-
-// $("#submit_login").click(function() {
-//   console.log("clicked login");
-//   var email = $('#email').val()
-//   console.log(email);
-//   var password = $('#password').val();
-//   console.log(password);
-//   login()
-//     .then( function(result){
-//       console.log(result);
-//       let user = result.user;
-//       userid = user.uid
-//       $('.loginPage').hide();
-//       $('.afterLogin').show();
-//     })
-//     .catch(function(error){
-//         console.log(error);
-//     });
-// });
 
 movieEvents()
 

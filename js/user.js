@@ -1,39 +1,45 @@
 "use strict";
 let firebase = require("./firebaseConfig"),
-    provider = new firebase.auth.GoogleAuthProvider();
+    provider = new firebase.auth.GoogleAuthProvider(),
+    email = $('#email').val(),
+    password = $('#password').val();
 
-    // credential = firebase.auth.EmailPasswordAuthProvider();
 
-
-// function newUser() {
-//   var email = $('#email').val()
-//   var password = $('#password').val();
-//   return firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
-//     var errorCode = error.code;
-//     var errorMessage = error.message;
-//     console.log(errorMessage);
-//   })
-// }
 function logInGoogle() {
-  console.log('log in google running')
   return firebase.auth().signInWithPopup(provider)
 
 }
 
-// function loginUser() {
-//   // var email = $('#email').val()
-//   // console.log(email);
-//   // var password = $('#password').val();
-//   // console.log(password);
-//   return firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
-//     var errorCode = error.code;
-//     var errorMessage = error.message;
-//     console.log(errorMessage);
-//   })
-// }
 
+function logOutGoogle() {
+   firebase.auth().signOut()
 
+   .then(function() {
+      console.log('Signout Succesfull')
+   }, function(error) {
+      console.log('Signout Failed')
+   });
+}
 
+function logInEmail() {
+  firebase.auth().signInWithEmailAndPassword(email, password)
 
-module.exports = logInGoogle;
+    .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ...
+  });
+}
+
+function newEmailUser(){
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ...
+  });
+}
+module.exports = logInGoogle, logOutGoogle, logInEmail, newEmailUser;
 
