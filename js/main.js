@@ -173,13 +173,46 @@ $("#google_login").click(function() {
   console.log("clicked auth");
   login()
   .then(function(result){
+    console.log(result)
     let user = result.user;
     console.log('USER ID IS THIS LONG THING', user.uid);
     userid = user.uid;
     $('.loginPage').hide();
     $('.afterLogin').show();
-
-    // var token = result.credential.accessToken;
   })
 
 });
+
+// $("#register").click(function() {
+//   console.log("clicked register");
+//   login()
+//     .then( function(result){
+//       console.log(result);
+//       let user = result.user;
+//       userid = user.uid
+//       $('.loginPage').hide();
+//       $('.afterLogin').show();
+//     })
+//     .catch(function(error){
+//         console.log(error);
+//     });
+// });
+
+// $("#submit_login").click(function() {
+//   console.log("clicked login");
+//   var email = $('#email').val()
+//   console.log(email);
+//   var password = $('#password').val();
+//   console.log(password);
+//   login()
+//     .then( function(result){
+//       console.log(result);
+//       let user = result.user;
+//       userid = user.uid
+//       $('.loginPage').hide();
+//       $('.afterLogin').show();
+//     })
+//     .catch(function(error){
+//         console.log(error);
+//     });
+// });

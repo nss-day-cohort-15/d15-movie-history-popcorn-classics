@@ -13,4 +13,6 @@ var config = {
 
 firebase.initializeApp(config);
 
+console.log(firebase);
+
 module.exports = firebase;
