@@ -97,15 +97,13 @@ $("#google_login").on('click', function() {
     userid = user.uid;
     $('.loginPage').hide();
     $('.afterLogin').show();
-
     // var token = result.credential.accessToken;
   })
-
 });
 
 /////////////////////////////////////////////////////
-// ADDS MOVIES TO DOM
-dom.addToDom(data)
+// ADDS TEST MOVIES TO DOM
+// dom.addToDom(data)
 
 //PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
 
@@ -191,6 +189,12 @@ $('#movieSearch').keypress(function(e) {
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
       .then(function(data){
+        var idArr = Object.keys(data)
+        idArr.forEach(function(key){
+          while(idArr < idArr.length-1){
+            data.Search[key].id = key
+          }
+        })
         dom.addToDom(data)
         movieEvents()
       })
