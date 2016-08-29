@@ -36,8 +36,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-// $('.loginPage').hide()
-$('.afterLogin').hide()
+$('.loginPage').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -134,11 +134,29 @@ $('.movie').on('click', function(){
 })
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
+  $(':radio').change(
+  function(){
+    $('.choice').text( $(this).val() + ' stars' );
+  } 
+)
+
 $('.unwatchedmovies').on('click', "div", function(){
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
-  var rate = `<input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
+  var rate = `    
+<span class="star-rating">
+  <input type="radio" name="rating" value="1"><i></i>
+  <input type="radio" name="rating" value="2"><i></i>
+  <input type="radio" name="rating" value="3"><i></i>
+  <input type="radio" name="rating" value="4"><i></i>
+  <input type="radio" name="rating" value="5"><i></i>
+</span>`
+
+$(':radio').change(
+  function(){
+    $('.choice').text( this.value + ' stars' );
+  } 
+)
   // Materialize.toast('Movie added to watched list!', 4000)
   $(this).append(rate)
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
