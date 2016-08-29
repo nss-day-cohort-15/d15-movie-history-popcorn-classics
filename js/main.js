@@ -150,7 +150,7 @@ function movieEvents(){
 
     console.log(title, poster, year)
     //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-    api.addUnwatchedMovie(buildObject(title, poster, year))
+    // api.addUnwatchedMovie(buildObject(title, poster, year))
   })
 }
   ///////////////////////////////////////////////
@@ -165,13 +165,14 @@ $('.unwatchedmovies').on('click', "div", function(){
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
   var rate = `    
-<span class="star-rating">
-  <input type="radio" name="rating" value="1"><i></i>
-  <input type="radio" name="rating" value="2"><i></i>
-  <input type="radio" name="rating" value="3"><i></i>
-  <input type="radio" name="rating" value="4"><i></i>
-  <input type="radio" name="rating" value="5"><i></i>
-</span>`
+    <div class="rating">
+      <input type="radio" name="rating" value="0" checked /><span id="hide"></span>
+      <input type="radio" name="rating" value="1" /><span></span>
+      <input type="radio" name="rating" value="2" /><span></span>
+      <input type="radio" name="rating" value="3" /><span></span>
+      <input type="radio" name="rating" value="4" /><span></span>
+      <input type="radio" name="rating" value="5" /><span></span>
+    </div>`
 
 $(':radio').change(
   function(){
@@ -200,7 +201,7 @@ $(':radio').change(
   let year = $(this).find('.year').text()
 
   console.log(title, poster, year)
-  api.addWatchedMovie(buildObject(title, poster, year))
+  // api.addWatchedMovie(buildObject(title, poster, year))
 })
 //MOVIE SEARCH PROMISE
 $('#movieSearch').keypress(function(e) {
