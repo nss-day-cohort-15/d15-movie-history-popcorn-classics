@@ -38,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-// $('.loginPage').hide()
-$('.afterLogin').hide()
+$('.loginPage').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -172,13 +172,7 @@ $('.unwatchedmovies').on('click', "div", function(){
       <input type="radio" name="rating" value="3" /><span></span>
       <input type="radio" name="rating" value="4" /><span></span>
       <input type="radio" name="rating" value="5" /><span></span>
-    </div>`
-
-$(':radio').change(
-  function(){
-    $('.choice').text( this.value + ' stars' );
-  } 
-)
+    </div>`;
   // Materialize.toast('Movie added to watched list!', 4000)
   $(this).append(rate)
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
