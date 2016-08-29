@@ -6,7 +6,7 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
     login = require('./user'),
-    userid
+    userid = ""
 
 // TEST MOVIE OBJECT
 var data = {
@@ -38,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-$('.loginPage').hide()
-// $('.afterLogin').hide()
+// $('.loginPage').hide()
+$('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -128,29 +128,31 @@ function options(){
   return destroy
 }
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-$('.movie').on('click', function(){
-  $(this).remove()
-  $(this).removeClass('movie')
-  $(this).addClass('newUnwatched')
-  $(this).prepend(options())
+function movieEvents(){
+  $('.movie').on('click', function(){
+    $(this).remove()
+    $(this).removeClass('movie')
+    $(this).addClass('newUnwatched')
+    $(this).prepend(options())
 
-  $('#unwatchedmovies').append(this)
+    $('#unwatchedmovies').append(this)
 
-  $('.delete').on('click', function(){
+    $('.delete').on('click', function(){
     // Materialize.toast('Movie added to unwatched list!', 4000)
     $(this).parent().remove()
     //DELETE ELEMENT FROM UNWATCHED FIREBASE LIST PROMISE
     // GOES HERE///////////////////////
   })
   // CREATES OBJECT BASED ON THE MOVIE CLICKED
-  var title = $(this).children('.movie_title').text()
-  var poster = $(this).children('.poster').attr('src')
-  var year = $(this).children('.year').text()
+    let title = $(this).children('.movie_title').text()
+    let poster = $(this).children('.poster').attr('src')
+    let year = $(this).children('.year').text()
 
-  console.log(title, poster, year)
-  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-  api.addUnwatchedMovie(buildObject(title, poster, year))
-})
+    console.log(title, poster, year)
+    //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+    api.addUnwatchedMovie(buildObject(title, poster, year))
+  })
+}
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $('.unwatchedmovies').on('click', "div", function(){
@@ -174,6 +176,13 @@ $('.unwatchedmovies').on('click', "div", function(){
   $('#rating', this).on('input', function(){
     $(this).next().next().html($('#rating', this).children().context.value)
   })
+
+  let title = $(this).find('.movie_title').text()
+  let poster = $(this).find('.poster').attr('src')
+  let year = $(this).find('.year').text()
+
+  console.log(title, poster, year)
+  api.addWatchedMovie(buildObject(title, poster, year))
 })
 //MOVIE SEARCH PROMISE
 $('#movieSearch').keypress(function(e) {
@@ -183,6 +192,7 @@ $('#movieSearch').keypress(function(e) {
     api.searchMovie(convertString(input))
       .then(function(data){
         dom.addToDom(data)
+        movieEvents()
       })
   }
 });
@@ -193,3 +203,4 @@ function convertString(string){
     return replaced
 }
 
+movieEvents()

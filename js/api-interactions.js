@@ -18,6 +18,19 @@ function addUnwatchedMovie(obj){
   })
 }
 
+function addWatchedMovie(obj){
+  return new Promise(function(resolve, reject){
+    $.ajax({
+      url: 'https://popcorn-classics.firebaseio.com/watched.json',
+      type: 'POST',
+      data: JSON.stringify(obj),
+      dataType: 'json'
+    }).done(function(songId){
+      resolve(songId)
+    })
+  })
+}
+
 let searchMovie = function(title) {
   return new Promise(function(resolve, reject){
     $.ajax({
@@ -62,4 +75,4 @@ let deleteMovie = function(movieId){
 
 
 
-  module.exports = {searchMovie, addUnwatchedMovie, deleteMovie};
+  module.exports = {searchMovie, addUnwatchedMovie, addWatchedMovie, deleteMovie};
