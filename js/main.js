@@ -7,8 +7,8 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     api = require('./api-interactions'),
     login = require('./user'),
     logOutGoogle = require('./user'),
-    logInEmail = require('./user'),
-    newEmailUser = require('./user'),
+    // logInEmail = require('./user'),
+    // newEmailUser = require('./user'),
     userid = "";
 
 // TEST MOVIE OBJECT
@@ -42,21 +42,21 @@ var data = {
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
 // $('.loginPage').hide()
-$('.afterLogin').hide()
+// $('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
-$('#google_login').hide()
+// $('#google_login').hide()
 
-$('#google').on('click', function(){
-  $('#google_login').show()
-  $('#login_info').hide()
-})
+// $('#google').on('click', function(){
+//   $('#google_login').show()
+//   $('#login_info').hide()
+// })
 
-$('#email').on('click', function(){
-  $('#login_info').show()
-  $('#google_login').hide()
-})
+// $('#email').on('click', function(){
+//   $('#login_info').show()
+//   $('#google_login').hide()
+// })
 
 /////////////////////////////////////////
 // AFTER LOGIN SPA PAGE EVENTS
@@ -91,7 +91,7 @@ $('#watched').on('click', function(){
   $('#watched').addClass('active')
   $('#home, #unwatched').removeClass('active')
 })
-//GOOGLE LOGIN
+// GOOGLE LOGIN
 $("#google_login").on('click', function() {
   console.log("clicked auth");
   login()
@@ -99,8 +99,9 @@ $("#google_login").on('click', function() {
     let user = result.user;
     console.log('USER ID IS THIS LONG THING', user.uid);
     userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
+    $('#logout').show();
+    $('#google_login').hide();
+
     // var token = result.credential.accessToken;
   })
 });
@@ -108,31 +109,35 @@ $("#google_login").on('click', function() {
 $('#logout').on('click', function(){
   logOutGoogle()
   console.log('user has logged out')
+    $('#google_login').show();
+    $('#logout').hide();
+    // $('.afterLogin').hide();
 })
 
-// EMAIL SIGNUP
-$('#register').on('click', function(){
-  newEmailUser()
-  .then(function(result){
-    let user = result.user;
-    console.log('USER ID IS THIS LONG THING', user.uid);
-    userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
-  })
-})
+// // EMAIL SIGNUP
+// $('#register').on('click', function(){
+//   console.log('clicked register')
+//   newEmailUser()
+//   .then(function(result){
+//     let user = result.user;
+//     userid = user.uid;
+//     $('.loginPage').hide();
+//     $('.afterLogin').show();
+//   })
+// })x
 
-// RETURNING USER LOGIN
-$('#submit_login').on('click', function(){
-  logInEmail()
-  .then(function(result){
-    let user = result.user;
-    console.log('USER ID IS THIS LONG THING', user.uid);
-    userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
-  })
-})
+// // RETURNING USER LOGIN
+// $('#submit_login').on('click', function(){
+//   console.log('clicked login')
+//   logInEmail()
+//   .then(function(result){
+//     let user = result.user;
+//     console.log('USER ID IS THIS LONG THING', user.uid);
+//     userid = user.uid;
+//     $('.loginPage').hide();
+//     $('.afterLogin').show();
+//   })
+// })
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
