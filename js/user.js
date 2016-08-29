@@ -35,7 +35,5 @@ function logInGoogle() {
 
 
 
-module.exports = loginUser;
-
-
+module.exports = logInGoogle;
 
