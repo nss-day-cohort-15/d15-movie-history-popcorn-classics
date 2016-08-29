@@ -1,15 +1,16 @@
 "use strict"
 
 let firebase = require('../lib/node_modules/firebase/app'),
-    fb = require('./fb-getter')
+    fb = require('./fb-getter'),
+    fbData = fb();
 
 require('../lib/node_modules/firebase/auth')
 
 var config = {
-  apiKey: fb.key,
-  authDomain: fb.authUrl
+  apiKey: fbData.key,
+  authDomain: fbData.authUrl
 }
 
-firebase.initializeApp(config)
+firebase.initializeApp(config);
 
-module.exports = firebase
+module.exports = firebase;
