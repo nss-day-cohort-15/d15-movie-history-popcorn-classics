@@ -5,7 +5,9 @@
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
-    userid
+    login = require('./user'),
+    userid = ""
+
 // TEST MOVIE OBJECT
 var data = {
   "Search": [
@@ -36,8 +38,8 @@ var data = {
     UNCOMMENT ONE TO SEE THE OTHER
     EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
     AFTERLOGIN TO SEE AFTER LOGIN*/
-$('.loginPage').hide()
-// $('.afterLogin').hide()
+// $('.loginPage').hide()
+$('.afterLogin').hide()
 ///////////////////////////////////////////////////
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
@@ -64,7 +66,7 @@ $('#home').on('click', function(){
 
   $('#home').addClass('active')
   $('#watched, #unwatched').removeClass('active')
-  $('.instruction').text('Click on a movie to add it to your unwatched list!')
+  $('.instruction').text('Click on a movie to save it to your unwatched list!')
 })
 
 $('#unwatched').on('click', function(){
@@ -74,7 +76,7 @@ $('#unwatched').on('click', function(){
 
   $('#unwatched').addClass('active')
   $('#watched, #home').removeClass('active')
-  $('.instruction').text('Click a movie to add it to your watched list!')
+  $('.instruction').text('Click a movie to save it to your watched list!')
 })
 
 $('#watched').on('click', function(){
@@ -85,6 +87,22 @@ $('#watched').on('click', function(){
   $('#watched').addClass('active')
   $('#home, #unwatched').removeClass('active')
 })
+//GOOGLE LOGIN
+$("#google_login").on('click', function() {
+  console.log("clicked auth");
+  login()
+  .then(function(result){
+    let user = result.user;
+    console.log('USER ID IS THIS LONG THING', user.uid);
+    userid = user.uid;
+    $('.loginPage').hide();
+    $('.afterLogin').show();
+
+    // var token = result.credential.accessToken;
+  })
+
+});
+
 /////////////////////////////////////////////////////
 // ADDS MOVIES TO DOM
 dom.addToDom(data)
@@ -92,7 +110,7 @@ dom.addToDom(data)
 //PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
 
 //////////////
-
+// USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
 function buildObject(t, p, y){
   let songObj = {
     title: t,
@@ -101,37 +119,40 @@ function buildObject(t, p, y){
     rating: "",
     userid: userid
   }
+  console.log(songObj)
   return songObj
 }
-
+// CREATES DELETE BUTTON
 function options(){
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
   return destroy
 }
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-$('.movie').on('click', function(){
-  $(this).remove()
-  $(this).removeClass('movie')
-  $(this).addClass('newUnwatched')
-  $(this).prepend(options())
+function movieEvents(){
+  $('.movie').on('click', function(){
+    $(this).remove()
+    $(this).removeClass('movie')
+    $(this).addClass('newUnwatched')
+    $(this).prepend(options())
 
-  $('#unwatchedmovies').append(this)
+    $('#unwatchedmovies').append(this)
 
-  $('.delete').on('click', function(){
+    $('.delete').on('click', function(){
     // Materialize.toast('Movie added to unwatched list!', 4000)
     $(this).parent().remove()
     //DELETE ELEMENT FROM UNWATCHED FIREBASE LIST PROMISE
     // GOES HERE///////////////////////
   })
   // CREATES OBJECT BASED ON THE MOVIE CLICKED
-  var title = $(this).children('.movie_title').text()
-  var poster = $(this).children('.poster').attr('src')
-  var year = $(this).children('.year').text()
+    let title = $(this).children('.movie_title').text()
+    let poster = $(this).children('.poster').attr('src')
+    let year = $(this).children('.year').text()
 
-  console.log(title, poster, year)
-  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-  api.addUnwatchedMovie(buildObject(title, poster, year))
-})
+    console.log(title, poster, year)
+    //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+    api.addUnwatchedMovie(buildObject(title, poster, year))
+  })
+}
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
   $(':radio').change(
@@ -164,7 +185,6 @@ $(':radio').change(
 
   //PROMISE TO ADD TO FIREBASE WATCHED MOVIES TABLE GOES HERE
 /////////////////
-
   $('.delete').on('click', function(){
     $(this).parent().remove()
   //DELETE ELEMENT FROM WATCHED FIREBASE LIST PROMISE
@@ -174,11 +194,31 @@ $(':radio').change(
   $('#rating', this).on('input', function(){
     $(this).next().next().html($('#rating', this).children().context.value)
   })
-})
 
+  let title = $(this).find('.movie_title').text()
+  let poster = $(this).find('.poster').attr('src')
+  let year = $(this).find('.year').text()
+
+  console.log(title, poster, year)
+  api.addWatchedMovie(buildObject(title, poster, year))
+})
+//MOVIE SEARCH PROMISE
+$('#movieSearch').keypress(function(e) {
+  if(e.which == 13) {
+    $('div#homemovies').html("")
+    var input = $('#movieSearch').val()
+    api.searchMovie(convertString(input))
+      .then(function(data){
+        dom.addToDom(data)
+        movieEvents()
+      })
+  }
+});
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){
     var replaced = string.split(' ').join('+').toLowerCase()
     return replaced
 }
+
+movieEvents()
