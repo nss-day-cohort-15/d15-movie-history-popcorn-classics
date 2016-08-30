@@ -35,7 +35,7 @@ function addUnwatchedMovie(obj){
 function addWatchedMovie(obj){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/trackedMovies.json',
+      url: 'https://popcorn-classics.firebaseio.com/unwatched.json',
       type: 'POST',
       data: JSON.stringify(obj),
       dataType: 'json'
@@ -44,11 +44,10 @@ function addWatchedMovie(obj){
     })
   })
 }
-
 // let searchMovie = function(title) {
 //   return new Promise(function(resolve, reject){
 //     $.ajax({
-//       url: `http://www.omdbapi.com/?s=${title}&r=json`
+//       url: `http://www.omdbapi.com/?apikey=a2ace4c2&s=${title}&r=json`
 //       // url: `http://www.omdbapi.com/?t=snatch&y=&plot=short&r=json`
 //     }).done(function(data){
 //         resolve(data)

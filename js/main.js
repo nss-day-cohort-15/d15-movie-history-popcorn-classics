@@ -8,29 +8,29 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     userid = ""
 // TEST MOVIE OBJECT
 // var data = {
-//   "Search": [
-//     {
-//       "Title": "Captain America: The First Avenger",
-//       "Year": "2011",
-//       "imdbID": "tt0458339",
-//       "Type": "movie",
-//       "Poster": "http://cdn.playbuzz.com/cdn/8ace370e-0453-4890-8fea-995f32ac9530/5efa0fd9-4850-47d4-814b-af367ab3f973.jpg"
-//     },
-//     {
-//       "Title": "Captain America: The Winter Soldier",
-//       "Year": "2014",
-//       "imdbID": "tt1843866",
-//       "Type": "movie",
-//       "Poster": "http://deeragaming.net/wp-content/uploads/2014/03/Bucky-Barnes-winter-soldier-image-bucky-barnes-winter-soldier-36483025-1200-1800.png"
-//     },
-//     {
-//       "Title": "Captain America: Civil War",
-//       "Year": "2016",
-//       "imdbID": "tt3498820",
-//       "Type": "movie",
-//       "Poster": "https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
-//     }
-//   ]
+  // "Search": [
+  //   {
+  //     "Title": "Captain America: The First Avenger",
+  //     "Year": "2011",
+  //     "imdbID": "tt0458339",
+  //     "Type": "movie",
+  //     "Poster": "http://cdn.playbuzz.com/cdn/8ace370e-0453-4890-8fea-995f32ac9530/5efa0fd9-4850-47d4-814b-af367ab3f973.jpg"
+  //   },
+  //   {
+  //     "Title": "Captain America: The Winter Soldier",
+  //     "Year": "2014",
+  //     "imdbID": "tt1843866",
+  //     "Type": "movie",
+  //     "Poster": "http://deeragaming.net/wp-content/uploads/2014/03/Bucky-Barnes-winter-soldier-image-bucky-barnes-winter-soldier-36483025-1200-1800.png"
+  //   },
+  //   {
+  //     "Title": "Captain America: Civil War",
+  //     "Year": "2016",
+  //     "imdbID": "tt3498820",
+  //     "Type": "movie",
+  //     "Poster": "https://upload.wikimedia.org/wikipedia/en/5/53/Captain_America_Civil_War_poster.jpg"
+  //   }
+  // ]
 // }
 /* USE TO TOGGLE VIEWS BETWEEN PAGES WHILE TESTING
     UNCOMMENT ONE TO SEE THE OTHER
@@ -56,12 +56,15 @@ $('#email').on('click', function(){
 // AFTER LOGIN SPA PAGE EVENTS
 $('#watchedmovies').hide()
 $('#unwatchedmovies').hide()
+$('#unwatched').hide()
+$('#watched').hide()
 
 $('#home').on('click', function(){
   $('#homemovies').show()
   $('#watchedmovies').hide()
   $('#unwatchedmovies').hide()
 
+  $('#crumbs').html('Home')
   $('#home').addClass('active')
   $('#watched, #unwatched').removeClass('active')
   $('.instruction').text('Click on a movie to save it to your unwatched list!')
@@ -72,6 +75,7 @@ $('#unwatched').on('click', function(){
   $('#watchedmovies').hide()
   $('#homemovies').hide()
 
+  $('#crumbs').html('Unwatched')
   $('#unwatched').addClass('active')
   $('#watched, #home').removeClass('active')
   $('.instruction').text('Click a movie to save it to your watched list!')
@@ -82,11 +86,12 @@ $('#watched').on('click', function(){
   $('#homemovies').hide()
   $('#unwatchedmovies').hide()
 
+  $('#crumbs').html('Watched')
   $('#watched').addClass('active')
   $('#home, #unwatched').removeClass('active')
 })
 //GOOGLE LOGIN
-$("#google_login").on('click', function() {
+$("#logout").on('click', function() {
   console.log("clicked auth");
   login()
   .then(function(result){
@@ -95,14 +100,14 @@ $("#google_login").on('click', function() {
     userid = user.uid;
     $('.loginPage').hide();
     $('.afterLogin').show();
-
+    $('#unwatched').show()
+    $('#watched').show()
     // var token = result.credential.accessToken;
   })
-
 });
 
 /////////////////////////////////////////////////////
-// ADDS MOVIES TO DOM
+// ADDS TEST MOVIES TO DOM
 // dom.addToDom(data)
 
 //PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
@@ -126,13 +131,27 @@ function options(){
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
   return destroy
 }
+
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-function movieEvents(){
-  $('.movie').on('click', function(){
+  $('.homemovies').on('click', '.add', function(e){
+    // $(this).parent().remove()
+    // console.log('HERE', $(this).find('p').html())
+    var jtarget = $(e.currentTarget).get(0)
+    var tpar = $(jtarget).parent().get(0)
     $(this).remove()
+
+    var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
+      type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
+
+    $(tpar).append(rate)
+
     $(this).removeClass('movie')
     $(this).addClass('newUnwatched')
     $(this).prepend(options())
+
+  $('.ratings').on('input', function(){
+    $(this).children('.r_value').html($('#rating', this).val())
+  })
 
     $('#unwatchedmovies').append(this)
 
@@ -143,24 +162,28 @@ function movieEvents(){
     // GOES HERE///////////////////////
   })
   // CREATES OBJECT BASED ON THE MOVIE CLICKED
-    let title = $(this).children('.movie_title').text()
-    let poster = $(this).children('.poster').attr('src')
-    let year = $(this).children('.year').text()
-
-    console.log(title, poster, year)
+    let getMovieInfo = function(){
+      console.log($(this))
+      let title = $(this).children('.movie_title').text()
+      let poster = $(this).children('.poster').attr('src')
+      let year = $(this).children('.year').text()
+      let movieObject = buildObject(title, poster, year, false)
+      console.log(title, poster, year)
+      return movieObject;
+    }
+    let moviesToAdd = getMovieInfo()
+    console.log(moviesToAdd);
     //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-    api.addUnwatchedMovie(buildObject(title, poster, year))
+    // api.addUnwatchedMovie(moviesToAdd);
   })
-}
   ///////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $('.unwatchedmovies').on('click', "div", function(){
+  console.log(this);
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
-  var rate = `<input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='5'><span class='r_value'>0</span>`
+
   // Materialize.toast('Movie added to watched list!', 4000)
-  $(this).append(rate)
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
   $('#watchedmovies').append(this)
 
@@ -171,11 +194,6 @@ $('.unwatchedmovies').on('click', "div", function(){
   //DELETE ELEMENT FROM WATCHED FIREBASE LIST PROMISE
     // GOES HERE
   })
-  //USED FOR RATING VALUE
-  $('#rating', this).on('input', function(){
-    $(this).next().next().html($('#rating', this).children().context.value)
-  })
-
   let title = $(this).find('.movie_title').text()
   let poster = $(this).find('.poster').attr('src')
   let year = $(this).find('.year').text()
@@ -191,8 +209,14 @@ $('#movieSearch').keypress(function(e) {
     api.searchMovie(convertString(input))
       .then(function(data){
         console.log(data.Search)
+        var idArr = Object.keys(data)
+        idArr.forEach(function(key){
+          while(idArr < idArr.length-1){
+            data.Search[key].id = key
+          }
+        })
         dom.addToDom(data)
-        movieEvents()
+        // movieEvents()
       })
   }
 });
@@ -203,7 +227,20 @@ function convertString(string){
     return replaced
 }
 
-api.searchMovie()
+// api.searchMovie()
 // api.addWatchedMovie()
 // api.addUnwatchedMovie()
-movieEvents()
+// movieEvents()
+
+
+
+/*
+  1.search firebase and omdb in search bar
+  2.add favorites tab: rating 1-10
+     a.only in favorites if watched and rated 10
+  3.add rating on unwatched list
+  4.
+  4. buttons disabled until movie search on signin
+  5. must rate one of tracked movies as a 10 to showup as a favorite, when favorites
+     button is clicked
+*/

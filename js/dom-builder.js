@@ -6,15 +6,23 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js')
 
 function addToDom(data){
   console.log(data)
-  for(var i =0; i < 10; i++){
-  var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
-  var poster = `<img src='${data.Search[i].Poster}' class='poster'>`
-  var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
+  var times
+  if(data.totalResults < 9){
+    times = data.totalResults
+  }
+  else{
+    times = 9
+  }
 
-  var movie = `<div class='movie'>${title}${poster}${year}</div>`
-  $('#homemovies').append(movie)
+  for(var i =0; i < times; i++){
+    var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
+    var poster = `<img src='${data.Search[i].Poster}' class='poster'>`
+    var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
+    var add = `<p><a href='#' class='add' id='add'>Add to watchlist</a></p>`
+    var movie = `<div class='movie'>${title}${poster}${year}${add}</div>`
+    $('#homemovies').append(movie)
   // $('#homemovies').append(entryTemplate(entryData))
   }
 }
 
-module.exports = {addToDom}
+module.exports = {addToDom};
