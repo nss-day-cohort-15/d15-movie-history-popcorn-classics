@@ -162,6 +162,8 @@ $('.homemovies').on('click', '.add', function(e){
   // Materialize.toast('Movie added to unwatched list!', 4000)
   // CREATES OBJECT BASED ON THE MOVIE CLICKED
   // let title = $(this).closest('.card').html()
+  //HAVING PROBLEMS GRABBING ITEMS IN MOVIE DIV ON ADD TO WATCHLIST
+  //CLICK. THIS IS A BAD WORK AROUND JUST FOR PRESENTATION
   $('.homemovies').on('click', '.movie', function(){
   $(this).addClass('newUnwatched')
     var title = $('.movie_title', this).text()
