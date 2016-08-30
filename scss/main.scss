@@ -167,10 +167,11 @@ body{
     color: red;
   }
   .r_value{
-    margin-left: 15%;
+    display: inline-block;
+    margin-left: 10%;
     border-radius: 40px;
     padding: 1.5%;
-    width: 5%;
+    // width: 11%;
     color: black;
     background-color: white;
   }
@@ -247,5 +248,8 @@ body{
   .delete:hover{
     color: white;
   }
-
+  .rating{
+    display: inline-block;
+    width: 70%;
+  }
 }
