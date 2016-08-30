@@ -159,17 +159,19 @@ $('.unwatchedmovies').on('click', "div", function(){
   $(this).addClass('newWatched')
   $(this).removeClass('newUnwatched')
   var rate = `<div class="row rating">
-<span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span><span class="starRate">☆</span>
+<span id="10" class="starRate">☆</span><span id="9" class="starRate">☆</span><span id="8" class="starRate">☆</span><span id="7" class="starRate">☆</span><span id="6" class="starRate">☆</span><span id="5" class="starRate">☆</span><span id="4" class="starRate">☆</span><span id="3" class="starRate">☆</span><span id="2" class="starRate">☆</span><span id="1" class="starRate">☆</span>
 </div>`
   // Materialize.toast('Movie added to watched list!', 4000)
   $(this).append(rate)
 
-  $.each(".rating"){
-
-  } 
     //APPENDS MOVIE FROM UNWATCHED LIST TO WATCH LIST ON CLICK
   $('#watchedmovies').append(this)
 
+$(".starRate").click(function(e) {
+  var starClicked = this.id;
+  console.log(this);
+  return starClicked;
+})
   //PROMISE TO ADD TO FIREBASE WATCHED MOVIES TABLE GOES HERE
 /////////////////
   $('.delete').on('click', function(){
