@@ -12,7 +12,7 @@ function logInGoogle() {
 
 
 function logOutGoogle() {
-   firebase.auth().signOut()
+   firebase.auth().signOut(provider)
 
    .then(function() {
       console.log('Signout Succesful')
