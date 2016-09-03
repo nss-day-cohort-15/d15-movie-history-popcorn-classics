@@ -5,20 +5,21 @@ function addSearchToDom(data){
   //USED TO PREVENT APP BREAK WHEN RESULTS RETURNED IS
   // LESS THAN 3
   var times
-  if(data.totalResults < 3){
+  if(data.totalResults < 6){
     times = data.totalResults
   }
   else{
-    times = 3
+    times = 6
   }
 
   for(var i =0; i < times; i++){
+    var movie = $(`<div class='movie'></div>`)
     var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
     var poster = `<img src='${data.Search[i].Poster}' class='poster'>`
     var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
     var add = `<p><a href='#' class='add' id='add'>Add to watchlist</a></p>`
 
-    var movie = `<div class='movie'>${title}${poster}${year}${add}</div>`
+    movie.append(title + poster + year + add)
     $('#homemovies').append(movie)
   }
 }
@@ -37,10 +38,15 @@ function addYoursToDom(data){
     var movie = `<div class='movie'>${destroy}${title}${poster}${year}${rate}${add}</div>`
     // $('#homemovies').append(movie)
 
+    console.log(data, data[key])
+
   if(data[key].watched === false && data[key].rating < 1){
     $('#unwatchedmovies').append(movie)
-  }else if(data[key].watched === true || data[key].rating > 0){
+    console.log('unwatched')
+  }
+  else if(data[key].watched === true || data[key].rating > 0){
     $('#watchedmovies').append(movie)
+    console.log('watched')
   }
  }
   $('.delete').on('click', function(){

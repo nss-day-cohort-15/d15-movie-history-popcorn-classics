@@ -18,19 +18,6 @@ function addMovie(obj){
   })
 }
 
-// function addWatchedMovie(obj){
-//   return new Promise(function(resolve, reject){
-//     $.ajax({
-//       url: 'https://popcorn-classics.firebaseio.com/watched.json',
-//       type: 'POST',
-//       data: JSON.stringify(obj),
-//       dataType: 'json'
-//     }).done(function(songId){
-//       resolve(songId)
-//     })
-//   })
-// }
-
 function loadAllMovies(){
   return new Promise(function(resolve, reject){
     $.ajax({
@@ -38,6 +25,7 @@ function loadAllMovies(){
     type: 'GET',
     dataType: 'json'
     }).done(function(data){
+      console.log(data)
       resolve(data)
     })
   })

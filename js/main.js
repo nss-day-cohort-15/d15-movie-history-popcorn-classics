@@ -8,10 +8,6 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     login = require('./user'),
     userid = ""
 
-/* USE TO TOGGLE VIEWS BETWEEN PAGES WHILE TESTING
-    UNCOMMENT ONE TO SEE THE OTHER
-    EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
-    AFTERLOGIN TO SEE AFTER LOGIN*/
 $('.loginPage').hide()
 // $('.afterLogin').hide()
 ///////////////////////////////////////////////////
@@ -86,7 +82,7 @@ $("#logout").on('click', function() {
   login()
   .then(function(result){
     let user = result.user;
-    console.log('USER ID IS THIS LONG THING', user.uid);
+    console.log(user.uid);
     userid = user.uid;
     $('.loginPage').hide();
     $('.afterLogin').show();
@@ -94,7 +90,14 @@ $("#logout").on('click', function() {
     $('#watched').show()
     $('#favorite').show()
     // var token = result.credential.accessToken;
+    })
+    .then(function(info){
+      api.loadAllMovies()
+      .then(function(data){
+        dom.addYoursToDom(data)
   })
+  })
+
 });
 
 $('#movieSearch').keypress(function(e) {
@@ -111,19 +114,14 @@ $('#movieSearch').keypress(function(e) {
         })
         dom.addSearchToDom(data)
         }).then(function(){
-          api.loadAllMovies()
+          if(userid){
+            api.loadAllMovies()
+          }
         }).then(function(data){
           dom.addYoursToDom(data)
         })
   }
 });
-
-  api.loadAllMovies()
-    .then(function(data){
-      dom.addYoursToDom(data)
-  })
-
-//PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
 
 //////////////
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
@@ -145,45 +143,33 @@ function options(){
   return destroy
 }
 
+// var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
+//   type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
+
+
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-$('.homemovies').on('click', '.add', function(e){
-  var jtarget = $(e.currentTarget).get(0)
-  var tpar = $(jtarget).parent().get(0)
+$(document).on('click', '.add', function(e){
+  var title = $(this).parent().parent().children('.movie_title').text()
+  var src = $(this).parent().parent().children('.poster').attr('src')
+  var year = $(this).parent().parent().children('.year').text()
   $(this).remove()
 
-  var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
-
-  $(tpar).append(rate)
-
-  $('.ratings').on('input', function(){
-    $(this).children('.r_value').html($('#rating', this).val())
-  })
-  // Materialize.toast('Movie added to unwatched list!', 4000)
-  // CREATES OBJECT BASED ON THE MOVIE CLICKED
-  // let title = $(this).closest('.card').html()
-  //HAVING PROBLEMS GRABBING ITEMS IN MOVIE DIV ON ADD TO WATCHLIST
-  //CLICK. THIS IS A BAD WORK AROUND JUST FOR PRESENTATION
-  $('.homemovies').on('click', '.movie', function(){
-  $(this).addClass('newUnwatched')
-    var title = $('.movie_title', this).text()
-    let poster = $('.poster', this).attr('src')
-    let year = $('.year', this).text()
-      $(this).removeClass('movie')
-    // console.log("here", title)
-    // console.log("poster",poster)
-    // console.log("year", year)
-    //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-    api.addMovie(buildObject(title, poster, year, false))
-      .then(function(data){
+  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+  if(userid){
+    Materialize.toast('Movie added to unwatched list!', 4000)
+    api.addMovie(buildObject(title, src, year, false))
+      .then(function(movie){
+        $('#unwatchedmovies').html("")
         api.loadAllMovies()
-      })
       .then(function(movie){
         dom.addYoursToDom(movie)
-      }).then(function(){
-        api.loadAllMovies()
-        })
-  })
+      })
+    })
+  }
+  else{
+    console.log('You cant add movies')
+    Materialize.toast('You must sign in to add movies!', 4000)
+  }
 })
 
 /////////////////////////////////////////////////////////////////
