@@ -130,6 +130,7 @@ $('#movieSearch').keypress(function(e) {
     $('#watchedmovies, #unwatchedmovies, #fave').hide()
     $('#home').addClass('active')
     $('#watched, #unwatched, #favorite').removeClass('active')
+    $('#crumbs').html('Home')
 
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
