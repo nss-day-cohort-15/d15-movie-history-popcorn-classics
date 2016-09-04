@@ -125,12 +125,12 @@ $('#movieSearch').keypress(function(e) {
 
 //////////////
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
-function buildObject(t, p, y, w){
+function buildObject(t, p, y, w, r){
   let songObj = {
     title: t,
     poster: p,
     year: y,
-    rating: "",
+    rating: r,
     watched: w,
     userid: userid
   }
@@ -149,15 +149,15 @@ function options(){
 
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $(document).on('click', '.add', function(e){
-  var title = $(this).parent().parent().children('.movie_title').text()
-  var src = $(this).parent().parent().children('.poster').attr('src')
-  var year = $(this).parent().parent().children('.year').text()
-  $(this).remove()
+  let title = $(this).parent().parent().children('.movie_title').text()
+  let src = $(this).parent().parent().children('.poster').attr('src')
+  let year = $(this).parent().parent().children('.year').text()
+  $(this).closest('.movie').remove()
 
   //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
   if(userid){
     Materialize.toast('Movie added to unwatched list!', 4000)
-    api.addMovie(buildObject(title, src, year, false))
+    api.addMovie(buildObject(title, src, year, false, 0))
       .then(function(movie){
         $('#unwatchedmovies').html("")
         api.loadAllMovies()
@@ -174,27 +174,24 @@ $(document).on('click', '.add', function(e){
 
 /////////////////////////////////////////////////////////////////
     // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
-$('.unwatchedmovies').on('click', ".save", function(){
+$(document).on('click', ".save", function(){
 
-  // Materialize.toast('Movie added to watched list!', 4000)
-  var bool = false
-  if($('.rating').val() > 0){
-    bool = true
-  }
+  Materialize.toast('Movie added to watched list!', 4000)
+  $(this).closest('.movie').remove()
 
-  let title = $(this).find('.title').text()
-  let poster = $(this).find('.poster').attr('src')
-  let year = $(this).find('.year').text()
+  var rating = $(this).closest('.movie').children('.ratings').children('.rating').val()
+  var title = $(this).closest('.movie').children('.movie_title').text()
+  var src = $(this).closest('.movie').children('.poster').attr('src')
+  var year = $(this).closest('.movie').children('.year').text()
 
-  console.log("here", title, poster, year)
-
-  api.addMovie(buildObject(title, poster, year, bool))
-    .then(function(data){
+  api.addMovie(buildObject(title, src, year, true, rating))
+    .then(function(movie){
+      $('#unwatchedmovies').html("")
+      $('#watchedmovies').html("")
       api.loadAllMovies()
-    }).then(function(movie){
-      dom.addYoursToDom(movie)
-    }).then(function(){
-      api.loadAllMovies()
+      .then(function(movie){
+        dom.addYoursToDom(movie)
+      })
     })
 })
 //MOVIE SEARCH PROMISE

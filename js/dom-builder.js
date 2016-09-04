@@ -26,26 +26,26 @@ function addSearchToDom(data){
 
 function addYoursToDom(data){
  for(var key in data){
-    var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
-    var title = `<h5 class='movie_title'>${data[key].title}</h2>`
-    var poster = `<img src='${data[key].poster}' class='poster'>`
-    var year = `<p class='year'>${data[key].year}</p>`
-    var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
-    var add = `<p><a href='#' class='save' id='save'>Save Rating</a></p>`
 
+  var your_movie = $(`<div class='movie'></div`)
+  var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
+  var title = `<h5 class='movie_title'>${data[key].title}</h2>`
+  var poster = `<img src='${data[key].poster}' class='poster'>`
+  var year = `<p class='year'>${data[key].year}</p>`
+  var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
+    type='range' step='.5' value='${data[key].rating}' min='0' max='10'><span class='r_value'>${data[key].rating}</span></div>`
+  var add = `<p><a href='#' class='save' id='save'>Save Rating</a></p>`
 
-    var movie = `<div class='movie'>${destroy}${title}${poster}${year}${rate}${add}</div>`
-    // $('#homemovies').append(movie)
+  your_movie.append(destroy + title + poster + year + rate + add)
 
-    console.log(data, data[key])
+    console.log("DATA", data, data[key])
 
   if(data[key].watched === false && data[key].rating < 1){
-    $('#unwatchedmovies').append(movie)
+    $('#unwatchedmovies').append(your_movie)
     console.log('unwatched')
   }
   else if(data[key].watched === true || data[key].rating > 0){
-    $('#watchedmovies').append(movie)
+    $('#watchedmovies').append(your_movie)
     console.log('watched')
   }
  }
