@@ -147,11 +147,6 @@ function buildObject(t, p, y, w, r){
   console.log(songObj)
   return songObj
 }
-// CREATES DELETE BUTTON
-function options(){
-  var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
-  return destroy
-}
 
 $(document).on('click', '.delete', function(){
   $(this).parent().remove()
@@ -172,10 +167,8 @@ $(document).on('click', '.add', function(){
     Materialize.toast('Movie added to unwatched list!', 4000)
     api.addMovie(buildObject(title, src, year, false, 0))
       .then(function(movie){
-        $('#unwatchedmovies').html("")
         api.loadAllMovies()
       .then(function(movie){
-        // console.log('MOVIE', movie)
         var idArr = Object.keys(movie)
         idArr.forEach(function(key){
           movie[key].id = key
@@ -194,7 +187,12 @@ $(document).on('click', '.add', function(){
 /////////////////////////////////////////////////////////////////
 //ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $(document).on('click', ".save", function(){
-  Materialize.toast('Movie added to watched list!', 4000)
+  if($('#unwatched').hasClass('active')){
+    Materialize.toast('Movie added to watched list!', 4000)
+  }
+  else{
+    Materialize.toast('Your rating was saved!', 4000)
+  }
   $(this).closest('.movie').remove()
 
   var cardId = $(this).closest('.movie').attr('id')
@@ -208,8 +206,6 @@ $(document).on('click', ".save", function(){
       console.log('deleted')
       api.addMovie(buildObject(title, src, year, true, rating))
       .then(function(movie){
-        $('#unwatchedmovies').html("")
-        $('#watchedmovies').html("")
         api.loadAllMovies()
           .then(function(movie){
             var idArr = Object.keys(movie)

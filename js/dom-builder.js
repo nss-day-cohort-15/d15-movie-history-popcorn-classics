@@ -25,6 +25,8 @@ function addSearchToDom(data){
 }
 
 function addYoursToDom(data, id){
+  $('div#unwatchedmovies').html("")
+  $('div#watchedmovies').html("")
  var i = 0
  for(var key in data){
   // console.log('ID', id[i])
