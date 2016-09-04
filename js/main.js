@@ -1,6 +1,5 @@
 "use strict";
 
-// http:www.omdbapi.com/?s=Captain+America&r=json
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
