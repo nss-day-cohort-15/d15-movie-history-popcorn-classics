@@ -21,7 +21,7 @@ function addMovie(obj){
 function loadAllMovies(uid){
   return new Promise(function(resolve, reject){
     $.ajax({
-    url: `https://popcorn-classics.firebaseio.com/movies.json`,
+    url: 'https://popcorn-classics.firebaseio.com/movies.json',
     type: 'GET',
     dataType: 'json'
     }).done(function(data){

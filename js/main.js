@@ -14,6 +14,7 @@ $('.loginPage').hide()
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
 $('#google_login').hide()
+$('#rval, #range, #r_label').hide()
 
 $('#google').on('click', function(){
   $('#google_login').show()
@@ -89,6 +90,7 @@ $(document).on('click', '#login', function(){
     $('.afterLogin, #unwatched, #watched, #favorite').show()
     $('.login').html('Logout')
     $('.login').attr('id', 'logout')
+    $('#rval, #range, #r_label').show()
 
     let loginToast = `<span><img class="login-img"
       src="${user.photoURL}"><h6>${user.displayName}
@@ -150,7 +152,7 @@ function buildObject(t, p, y, w, r){
   }
   return songObj
 }
-
+//DELETES MOVIE WHEN 'X' IS CLICKED
 $(document).on('click', '.delete', function(){
   $(this).parent().remove()
   let movieId = $(this).closest('.movie').attr('id')
