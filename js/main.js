@@ -87,10 +87,10 @@ $(document).on('click', '#login', function(){
     console.log(user.uid)
     userid = user.uid
     $('.loginPage').hide()
-    $('.afterLogin').show()
-    $('#unwatched').show()
-    $('#watched').show()
-    $('#favorite').show()
+    $('.afterLogin, #unwatched, #watched, #favorite').show()
+    // $('#unwatched').show()
+    // $('#watched').show()
+    // $('#favorite').show()
     $('.login').html('Logout')
     $('.login').attr('id', 'logout')
 
