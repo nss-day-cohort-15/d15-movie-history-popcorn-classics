@@ -16,6 +16,20 @@ body{
     margin-bottom: -9%;
     font-family: 'Exo', sans-serif;
   }
+  .watchedmovies, .watchedmovies, .homemovies, .fave{
+    margin-bottom: 2%;
+    border-radius: 5px;
+  }
+  .in_text{
+    background-color: red;
+    color: white;
+    border: 2px solid white;
+    margin: auto;
+    font-size: 2em;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5%
+  }
 
   // .login{
   //   text-align: center;

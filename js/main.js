@@ -87,10 +87,7 @@ $(document).on('click', '#login', function(){
     console.log(user.uid)
     userid = user.uid
     $('.loginPage').hide()
-    $('.afterLogin').show()
-    $('#unwatched').show()
-    $('#watched').show()
-    $('#favorite').show()
+    $('.afterLogin, #unwatched, #watched, #favorite').show()
     $('.login').html('Logout')
     $('.login').attr('id', 'logout')
 
@@ -110,7 +107,7 @@ $(document).on('click', '#login', function(){
         window.location.reload()
       }, 2000);
     })
-  })
+
     api.loadAllMovies()
       .then(function(data){
         console.log('DATA', data)
@@ -119,8 +116,9 @@ $(document).on('click', '#login', function(){
             data[key].id = key
           })
         deleteKeys = idArr
-        dom.addYoursToDom(data, deleteKeys)
+        dom.addYoursToDom(data, deleteKeys, userid)
       })
+    })
 });
 
 $('#movieSearch').keypress(function(e) {
@@ -137,6 +135,7 @@ $('#movieSearch').keypress(function(e) {
       .then(function(data){
         dom.addSearchToDom(data)
       })
+  console.log('USERIDDDD', userid)
   }
 });
 
@@ -150,7 +149,6 @@ function buildObject(t, p, y, w, r){
     watched: w,
     userid: userid
   }
-  console.log(songObj)
   return songObj
 }
 
@@ -179,7 +177,7 @@ $(document).on('click', '.add', function(){
           movie[key].id = key
           deleteKeys = idArr
         })
-          dom.addYoursToDom(movie, deleteKeys)
+          dom.addYoursToDom(movie, deleteKeys, userid)
       })
     })
   }
@@ -219,7 +217,7 @@ $(document).on('click', ".save", function(){
               deleteKeys = idArr
               console.log(userid)
             })
-              dom.addYoursToDom(movie, idArr)
+              dom.addYoursToDom(movie, idArr, userid)
         })
       })
     })
