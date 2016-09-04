@@ -5,6 +5,7 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
     login = require('./user'),
+    logOutGoogle = require('./logOut'),
     userid = "",
     deleteKeys = []
 
@@ -97,8 +98,20 @@ $(document).on('click', '#login', function(){
       src="${user.photoURL}"><h6>${user.displayName}
       successfully logged in!</h6></span>`
     Materialize.toast(loginToast, 4000)
+
+    $(document).on('click', '#logout', function(){
+      console.log('logout')
+      let logoutToast = `<span><img class="login-img"
+        src="${user.photoURL}"><h6>${user.displayName}
+        successfully logged out!</h6></span>`
+      Materialize.toast(logoutToast, 2000)
+      logOutGoogle()
+      setTimeout(function(){
+        window.location.reload()
+      }, 2000);
+    })
   })
-      api.loadAllMovies()
+    api.loadAllMovies()
       .then(function(data){
         console.log('DATA', data)
           var idArr = Object.keys(data)
@@ -108,17 +121,6 @@ $(document).on('click', '#login', function(){
         deleteKeys = idArr
         dom.addYoursToDom(data, deleteKeys)
       })
-
-  // $('#logout').on('click', function(){
-  //   let logoutToast = `<span><img class="login-img"
-  //     src="${user.photoURL}"><h6>${user.displayName}
-  //     successfully logged out!</h6></span>`
-  //   Materialize.toast(logoutToast, 2000)
-  //   logOutGoogle()
-  //   setTimeout(function(){
-  //     window.location.reload()
-  //   }, 2000);
-  // })
 });
 
 $('#movieSearch').keypress(function(e) {
