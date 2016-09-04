@@ -163,11 +163,11 @@ $(document).on('click', '.add', function(){
   let title = $(this).parent().parent().children('.movie_title').text()
   let src = $(this).parent().parent().children('.poster').attr('src')
   let year = $(this).parent().parent().children('.year').text()
-  $(this).closest('.movie').remove()
 
   //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
   if(userid){
-    Materialize.toast('Movie added to unwatched list!', 4000)
+    $(this).closest('.movie').remove()
+    Materialize.toast(`${title}, was added to your unwatched list!`, 4000)
     api.addMovie(buildObject(title, src, year, false, 0))
       .then(function(movie){
         api.loadAllMovies()
@@ -190,19 +190,20 @@ $(document).on('click', '.add', function(){
 /////////////////////////////////////////////////////////////////
 //ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $(document).on('click', ".save", function(){
+  var cardId = $(this).closest('.movie').attr('id')
+  var rating = $(this).closest('.movie').children('.ratings').children('.rating').val()
+  var title = $(this).closest('.movie').children('.movie_title').text()
+  var src = $(this).closest('.movie').children('.poster').attr('src')
+  var year = $(this).closest('.movie').children('.year').text()
+
   if($('#unwatched').hasClass('active')){
-    Materialize.toast('Movie added to watched list!', 4000)
+    Materialize.toast(`${title} was added to your watched list, with a rating of ${rating}`, 4000)
   }
   else{
     Materialize.toast('Your rating was saved!', 4000)
   }
   $(this).closest('.movie').remove()
 
-  var cardId = $(this).closest('.movie').attr('id')
-  var rating = $(this).closest('.movie').children('.ratings').children('.rating').val()
-  var title = $(this).closest('.movie').children('.movie_title').text()
-  var src = $(this).closest('.movie').children('.poster').attr('src')
-  var year = $(this).closest('.movie').children('.year').text()
 
   api.deleteMovie(cardId)
     .then(function(data){
