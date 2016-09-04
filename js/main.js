@@ -1,17 +1,14 @@
 "use strict";
 
 // http:www.omdbapi.com/?s=Captain+America&r=json
-
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
     login = require('./user'),
-    userid = ""
+    logOutGoogle = require('./logOut'),
+    userid,
+    deleteKeys = []
 
-/* USE TO TOGGLE VIEWS BETWEEN PAGES WHILE TESTING
-    UNCOMMENT ONE TO SEE THE OTHER
-    EX: COMMENT OUT $('.LOGINPAGE') AND UNCOMMENT
-    AFTERLOGIN TO SEE AFTER LOGIN*/
 $('.loginPage').hide()
 // $('.afterLogin').hide()
 ///////////////////////////////////////////////////
@@ -79,139 +76,154 @@ $('#favorite').on('click', function(){
   $('#favorite').addClass('active')
   $('#home, #unwatched, #watched').removeClass('active')
 })
+// ///////////////END AFTER LOGIN SPA EVENTS/////////////////////
 
 //GOOGLE LOGIN
-$("#logout").on('click', function() {
-  console.log("clicked auth");
+$(document).on('click', '#login', function(){
+  console.log("clicked auth")
   login()
   .then(function(result){
-    let user = result.user;
-    console.log('USER ID IS THIS LONG THING', user.uid);
-    userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
+    let user = result.user
+    console.log(user.uid)
+    userid = user.uid
+    $('.loginPage').hide()
+    $('.afterLogin').show()
     $('#unwatched').show()
     $('#watched').show()
     $('#favorite').show()
-    // var token = result.credential.accessToken;
+    $('.login').html('Logout')
+    $('.login').attr('id', 'logout')
+
+    let loginToast = `<span><img class="login-img"
+      src="${user.photoURL}"><h6>${user.displayName}
+      successfully logged in!</h6></span>`
+    Materialize.toast(loginToast, 4000)
+
+    $(document).on('click', '#logout', function(){
+      console.log('logout')
+      let logoutToast = `<span><img class="login-img"
+        src="${user.photoURL}"><h6>${user.displayName}
+        successfully logged out!</h6></span>`
+      Materialize.toast(logoutToast, 2000)
+      logOutGoogle()
+      setTimeout(function(){
+        window.location.reload()
+      }, 2000);
+    })
   })
+    api.loadAllMovies()
+      .then(function(data){
+        console.log('DATA', data)
+          var idArr = Object.keys(data)
+          idArr.forEach(function(key){
+            data[key].id = key
+          })
+        deleteKeys = idArr
+        dom.addYoursToDom(data, deleteKeys)
+      })
 });
 
 $('#movieSearch').keypress(function(e) {
   if(e.which == 13) {
     $('div#homemovies').html("")
+    $('#homemovies').show()
+    $('#watchedmovies, #unwatchedmovies, #fave').hide()
+    $('#home').addClass('active')
+    $('#watched, #unwatched, #favorite').removeClass('active')
+    $('#crumbs').html('Home')
+
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
       .then(function(data){
-        var idArr = Object.keys(data)
-        idArr.forEach(function(key){
-          while(idArr < idArr.length-1){
-            data.Search[key].id = key
-          }
-        })
         dom.addSearchToDom(data)
-        }).then(function(){
-          api.loadAllMovies()
-        }).then(function(data){
-          dom.addYoursToDom(data)
-        })
+      })
   }
 });
 
-  api.loadAllMovies()
-    .then(function(data){
-      dom.addYoursToDom(data)
-  })
-
-//PROMISE TO ADD SEARCH RESULTS TO DOM POSSIBLY GOES HERE?
-
-//////////////
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
-function buildObject(t, p, y, w){
+function buildObject(t, p, y, w, r){
   let songObj = {
     title: t,
     poster: p,
     year: y,
-    rating: "",
+    rating: r,
     watched: w,
     userid: userid
   }
   console.log(songObj)
   return songObj
 }
-// CREATES DELETE BUTTON
-function options(){
-  var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
-  return destroy
-}
 
+$(document).on('click', '.delete', function(){
+  $(this).parent().remove()
+  let movieId = $(this).closest('.movie').attr('id')
+  api.deleteMovie(movieId)
+  Materialize.toast('Movie deleted!', 4000)
+})
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-$('.homemovies').on('click', '.add', function(e){
-  var jtarget = $(e.currentTarget).get(0)
-  var tpar = $(jtarget).parent().get(0)
-  $(this).remove()
+$(document).on('click', '.add', function(){
+  let title = $(this).parent().parent().children('.movie_title').text()
+  let src = $(this).parent().parent().children('.poster').attr('src')
+  let year = $(this).parent().parent().children('.year').text()
+  $(this).closest('.movie').remove()
 
-  var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
-    type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
-
-  $(tpar).append(rate)
-
-  $('.ratings').on('input', function(){
-    $(this).children('.r_value').html($('#rating', this).val())
-  })
-  // Materialize.toast('Movie added to unwatched list!', 4000)
-  // CREATES OBJECT BASED ON THE MOVIE CLICKED
-  // let title = $(this).closest('.card').html()
-  //HAVING PROBLEMS GRABBING ITEMS IN MOVIE DIV ON ADD TO WATCHLIST
-  //CLICK. THIS IS A BAD WORK AROUND JUST FOR PRESENTATION
-  $('.homemovies').on('click', '.movie', function(){
-  $(this).addClass('newUnwatched')
-    var title = $('.movie_title', this).text()
-    let poster = $('.poster', this).attr('src')
-    let year = $('.year', this).text()
-      $(this).removeClass('movie')
-    // console.log("here", title)
-    // console.log("poster",poster)
-    // console.log("year", year)
-    //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
-    api.addMovie(buildObject(title, poster, year, false))
-      .then(function(data){
-        api.loadAllMovies()
-      })
+  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+  if(userid){
+    Materialize.toast('Movie added to unwatched list!', 4000)
+    api.addMovie(buildObject(title, src, year, false, 0))
       .then(function(movie){
-        dom.addYoursToDom(movie)
-      }).then(function(){
         api.loadAllMovies()
+      .then(function(movie){
+        var idArr = Object.keys(movie)
+        idArr.forEach(function(key){
+          movie[key].id = key
+          deleteKeys = idArr
         })
-  })
+          dom.addYoursToDom(movie, deleteKeys)
+      })
+    })
+  }
+  else{
+    console.log('You cant add movies')
+    Materialize.toast('You must sign in to add movies!', 4000)
+  }
 })
 
 /////////////////////////////////////////////////////////////////
-    // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
-$('.unwatchedmovies').on('click', ".save", function(){
-
-  // Materialize.toast('Movie added to watched list!', 4000)
-  var bool = false
-  if($('.rating').val() > 0){
-    bool = true
+//ADDS MOVIE TO WATCHED LIST WHEN CLICKED
+$(document).on('click', ".save", function(){
+  if($('#unwatched').hasClass('active')){
+    Materialize.toast('Movie added to watched list!', 4000)
   }
+  else{
+    Materialize.toast('Your rating was saved!', 4000)
+  }
+  $(this).closest('.movie').remove()
 
-  let title = $(this).find('.title').text()
-  let poster = $(this).find('.poster').attr('src')
-  let year = $(this).find('.year').text()
+  var cardId = $(this).closest('.movie').attr('id')
+  var rating = $(this).closest('.movie').children('.ratings').children('.rating').val()
+  var title = $(this).closest('.movie').children('.movie_title').text()
+  var src = $(this).closest('.movie').children('.poster').attr('src')
+  var year = $(this).closest('.movie').children('.year').text()
 
-  console.log("here", title, poster, year)
-
-  api.addMovie(buildObject(title, poster, year, bool))
+  api.deleteMovie(cardId)
     .then(function(data){
-      api.loadAllMovies()
-    }).then(function(movie){
-      dom.addYoursToDom(movie)
-    }).then(function(){
-      api.loadAllMovies()
+      console.log('deleted')
+      api.addMovie(buildObject(title, src, year, true, rating))
+      .then(function(movie){
+        api.loadAllMovies()
+          .then(function(movie){
+            var idArr = Object.keys(movie)
+            idArr.forEach(function(key){
+              movie[key].id = key
+              deleteKeys = idArr
+              console.log(userid)
+            })
+              dom.addYoursToDom(movie, idArr)
+        })
+      })
     })
 })
-//MOVIE SEARCH PROMISE
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){
