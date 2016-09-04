@@ -17,27 +17,27 @@ body{
     font-family: 'Exo', sans-serif;
   }
 
-  .login{
-    text-align: center;
-    margin: auto;
-    margin-top: 10%;
-    width: 80%;
-    border: 3px solid red;;
-    border-radius: 30px;
-    background-color: black;
+  // .login{
+  //   text-align: center;
+  //   margin: auto;
+  //   margin-top: 10%;
+  //   width: 80%;
+  //   border: 3px solid red;;
+  //   border-radius: 30px;
+  //   background-color: black;
 
-    .login_nav{
-      text-align: center;
-      margin-top: 2%;
+  //   .login_nav{
+  //     text-align: center;
+  //     margin-top: 2%;
 
-        .option{
-          color: white;
-          margin-top: 3%;
-          font-size: 1.5em;
-          padding-left: 3%;
-          margin-left: 5%;
-        }
-    }
+  //       .option{
+  //         color: white;
+  //         margin-top: 3%;
+  //         font-size: 1.5em;
+  //         padding-left: 3%;
+  //         margin-left: 5%;
+  //       }
+  //   }
 
     .google_login{
       margin-top: 5%;
@@ -68,7 +68,7 @@ body{
       margin-bottom: 3%;
     }
 
-  }
+  // }
   .movie{
     border: 2px solid white;
     background-color: black;
@@ -188,7 +188,7 @@ body{
     width: 20%;
   }
 
-  .logout{
+  .login{
     color: white;
     margin-left: 5%;
   }

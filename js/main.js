@@ -1,12 +1,12 @@
 "use strict";
 
 // http:www.omdbapi.com/?s=Captain+America&r=json
-
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
     login = require('./user'),
-    userid = ""
+    userid = "",
+    deleteKeys = []
 
 $('.loginPage').hide()
 // $('.afterLogin').hide()
@@ -75,29 +75,50 @@ $('#favorite').on('click', function(){
   $('#favorite').addClass('active')
   $('#home, #unwatched, #watched').removeClass('active')
 })
+// ///////////////END AFTER LOGIN SPA EVENTS/////////////////////
 
 //GOOGLE LOGIN
-$("#logout").on('click', function() {
-  console.log("clicked auth");
+$(document).on('click', '#login', function(){
+  console.log("clicked auth")
   login()
   .then(function(result){
-    let user = result.user;
-    console.log(user.uid);
-    userid = user.uid;
-    $('.loginPage').hide();
-    $('.afterLogin').show();
+    let user = result.user
+    console.log(user.uid)
+    userid = user.uid
+    $('.loginPage').hide()
+    $('.afterLogin').show()
     $('#unwatched').show()
     $('#watched').show()
     $('#favorite').show()
-    // var token = result.credential.accessToken;
-    })
-    .then(function(info){
+    $('.login').html('Logout')
+    $('.login').attr('id', 'logout')
+
+    let loginToast = `<span><img class="login-img"
+      src="${user.photoURL}"><h6>${user.displayName}
+      successfully logged in!</h6></span>`
+    Materialize.toast(loginToast, 4000)
+  })
       api.loadAllMovies()
       .then(function(data){
-        dom.addYoursToDom(data)
-  })
-  })
+        console.log('DATA', data)
+          var idArr = Object.keys(data)
+          idArr.forEach(function(key){
+            data[key].id = key
+          })
+        deleteKeys = idArr
+        dom.addYoursToDom(data, deleteKeys)
+      })
 
+  // $('#logout').on('click', function(){
+  //   let logoutToast = `<span><img class="login-img"
+  //     src="${user.photoURL}"><h6>${user.displayName}
+  //     successfully logged out!</h6></span>`
+  //   Materialize.toast(logoutToast, 2000)
+  //   logOutGoogle()
+  //   setTimeout(function(){
+  //     window.location.reload()
+  //   }, 2000);
+  // })
 });
 
 $('#movieSearch').keypress(function(e) {
@@ -106,24 +127,11 @@ $('#movieSearch').keypress(function(e) {
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
       .then(function(data){
-        var idArr = Object.keys(data)
-        idArr.forEach(function(key){
-          while(idArr < idArr.length-1){
-            data.Search[key].id = key
-          }
-        })
         dom.addSearchToDom(data)
-        }).then(function(){
-          if(userid){
-            api.loadAllMovies()
-          }
-        }).then(function(data){
-          dom.addYoursToDom(data)
-        })
+      })
   }
 });
 
-//////////////
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
 function buildObject(t, p, y, w, r){
   let songObj = {
@@ -143,12 +151,15 @@ function options(){
   return destroy
 }
 
-// var rate = `<div class='ratings' id='ratings'><input class='rating' id='rating'
-//   type='range' step='.5' value='0' min='0' max='10'><span class='r_value'>0</span></div>`
-
+$(document).on('click', '.delete', function(){
+  $(this).parent().remove()
+  let movieId = $(this).closest('.movie').attr('id')
+  api.deleteMovie(movieId)
+  Materialize.toast('Movie deleted!', 4000)
+})
 
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
-$(document).on('click', '.add', function(e){
+$(document).on('click', '.add', function(){
   let title = $(this).parent().parent().children('.movie_title').text()
   let src = $(this).parent().parent().children('.poster').attr('src')
   let year = $(this).parent().parent().children('.year').text()
@@ -162,7 +173,13 @@ $(document).on('click', '.add', function(e){
         $('#unwatchedmovies').html("")
         api.loadAllMovies()
       .then(function(movie){
-        dom.addYoursToDom(movie)
+        // console.log('MOVIE', movie)
+        var idArr = Object.keys(movie)
+        idArr.forEach(function(key){
+          movie[key].id = key
+          deleteKeys = idArr
+          dom.addYoursToDom(movie, deleteKeys)
+        })
       })
     })
   }
@@ -173,28 +190,36 @@ $(document).on('click', '.add', function(e){
 })
 
 /////////////////////////////////////////////////////////////////
-    // ADDS MOVIE TO WATCHED LIST WHEN CLICKED
+//ADDS MOVIE TO WATCHED LIST WHEN CLICKED
 $(document).on('click', ".save", function(){
-
   Materialize.toast('Movie added to watched list!', 4000)
   $(this).closest('.movie').remove()
 
+  var cardId = $(this).closest('.movie').attr('id')
   var rating = $(this).closest('.movie').children('.ratings').children('.rating').val()
   var title = $(this).closest('.movie').children('.movie_title').text()
   var src = $(this).closest('.movie').children('.poster').attr('src')
   var year = $(this).closest('.movie').children('.year').text()
 
-  api.addMovie(buildObject(title, src, year, true, rating))
-    .then(function(movie){
-      $('#unwatchedmovies').html("")
-      $('#watchedmovies').html("")
-      api.loadAllMovies()
+  api.deleteMovie(cardId)
+    .then(function(data){
+      console.log('deleted')
+      api.addMovie(buildObject(title, src, year, true, rating))
       .then(function(movie){
-        dom.addYoursToDom(movie)
+        $('#unwatchedmovies').html("")
+        $('#watchedmovies').html("")
+        api.loadAllMovies()
+          .then(function(movie){
+            var idArr = Object.keys(movie)
+            idArr.forEach(function(key){
+              movie[key].id = key
+              deleteKeys = idArr
+              dom.addYoursToDom(movie, idArr)
+            })
+        })
       })
     })
 })
-//MOVIE SEARCH PROMISE
 
 // CONVERTS MOVIE USER INPUT STRING TO A URL USEABLE ONE
 function convertString(string){

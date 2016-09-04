@@ -5,11 +5,11 @@ function addSearchToDom(data){
   //USED TO PREVENT APP BREAK WHEN RESULTS RETURNED IS
   // LESS THAN 3
   var times
-  if(data.totalResults < 6){
+  if(data.totalResults < 9){
     times = data.totalResults
   }
   else{
-    times = 6
+    times = 9
   }
 
   for(var i =0; i < times; i++){
@@ -24,10 +24,11 @@ function addSearchToDom(data){
   }
 }
 
-function addYoursToDom(data){
+function addYoursToDom(data, id){
+ var i = 0
  for(var key in data){
-
-  var your_movie = $(`<div class='movie'></div`)
+  // console.log('ID', id[i])
+  var your_movie = $(`<div class='movie' id='${id[i]}'></div`)
   var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
   var title = `<h5 class='movie_title'>${data[key].title}</h2>`
   var poster = `<img src='${data[key].poster}' class='poster'>`
@@ -38,8 +39,6 @@ function addYoursToDom(data){
 
   your_movie.append(destroy + title + poster + year + rate + add)
 
-    console.log("DATA", data, data[key])
-
   if(data[key].watched === false && data[key].rating < 1){
     $('#unwatchedmovies').append(your_movie)
     console.log('unwatched')
@@ -48,14 +47,13 @@ function addYoursToDom(data){
     $('#watchedmovies').append(your_movie)
     console.log('watched')
   }
+  i++
  }
-  $('.delete').on('click', function(){
-    $(this).parent().remove()
-  })
 
   $('.ratings').on('input', function(){
     $(this).children('.r_value').html($('#rating', this).val())
   })
+
 }
 
 module.exports = {addSearchToDom, addYoursToDom}

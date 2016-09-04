@@ -48,7 +48,7 @@ let searchMovie = function(title) {
 let deleteMovie = function(movieId){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/movies/json', // this is the wrong url
+      url: `https://popcorn-classics.firebaseio.com/movies/${movieId}.json`, // this is the wrong url
       type: 'DELETE'
     }).done(function(movieData){
         resolve(movieData);
