@@ -6,7 +6,7 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     api = require('./api-interactions'),
     login = require('./user'),
     logOutGoogle = require('./logOut'),
-    userid = "",
+    userid,
     deleteKeys = []
 
 $('.loginPage').hide()
@@ -126,6 +126,11 @@ $(document).on('click', '#login', function(){
 $('#movieSearch').keypress(function(e) {
   if(e.which == 13) {
     $('div#homemovies').html("")
+    $('#homemovies').show()
+    $('#watchedmovies, #unwatchedmovies, #fave').hide()
+    $('#home').addClass('active')
+    $('#watched, #unwatched, #favorite').removeClass('active')
+
     var input = $('#movieSearch').val()
     api.searchMovie(convertString(input))
       .then(function(data){
@@ -154,7 +159,6 @@ $(document).on('click', '.delete', function(){
   api.deleteMovie(movieId)
   Materialize.toast('Movie deleted!', 4000)
 })
-
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $(document).on('click', '.add', function(){
   let title = $(this).parent().parent().children('.movie_title').text()
@@ -173,8 +177,8 @@ $(document).on('click', '.add', function(){
         idArr.forEach(function(key){
           movie[key].id = key
           deleteKeys = idArr
-          dom.addYoursToDom(movie, deleteKeys)
         })
+          dom.addYoursToDom(movie, deleteKeys)
       })
     })
   }
@@ -212,8 +216,9 @@ $(document).on('click', ".save", function(){
             idArr.forEach(function(key){
               movie[key].id = key
               deleteKeys = idArr
-              dom.addYoursToDom(movie, idArr)
+              console.log(userid)
             })
+              dom.addYoursToDom(movie, idArr)
         })
       })
     })
