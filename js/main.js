@@ -183,9 +183,15 @@ function buildObject(t, p, y, w, r){
 //DELETES MOVIE WHEN 'X' IS CLICKED
 $(document).on('click', '.delete', function(){
   $(this).parent().remove()
+  let title = $(this).parent().children('.movie_title').text()
   let movieId = $(this).closest('.movie').attr('id')
   api.deleteMovie(movieId)
-  Materialize.toast('Movie deleted!', 4000)
+  if(title === 'Gladiator'){
+    Materialize.toast(`ARE YOU NOT ENTERTAINED?!`, 4000)
+  }
+  else{
+    Materialize.toast(`${title} was deleted!`, 4000)
+  }
 })
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $(document).on('click', '.add', function(){

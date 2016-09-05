@@ -90,6 +90,21 @@ body{
   .range{
     width: 50%;
     display: inline-block;
+    background-color: red !important;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track{
+    background: black !important;
+    height: 6px;
+    border-radius: 20px;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    background: red !important;
+    width: 5%;
+    box-shadow: 2px 2px 2px black;
+    border-radius: 40px;
+    border: 2px solid white;
   }
 
   .r_label{
