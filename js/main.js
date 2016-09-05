@@ -148,9 +148,9 @@ $(document).on('input', '#range', function(){
       }
     })
 })
-
-$('#movieSearch').keypress(function(e) {
-  if(e.which == 13) {
+$('#movieSearch').on('input', function(){
+// $('#movieSearch').keypress(function(e) {
+  // if(e.which == 13) {
     $('div#homemovies').html("")
     $('#homemovies').show()
     $('#watchedmovies, #unwatchedmovies').hide()
@@ -159,14 +159,15 @@ $('#movieSearch').keypress(function(e) {
     $('#crumbs').html('Home')
 
     var input = $('#movieSearch').val()
-    $('#movieSearch').val("")
+    // $('#movieSearch').val("")
     api.searchMovie(convertString(input))
       .then(function(data){
         dom.addSearchToDom(data)
       })
   console.log('USERIDDDD', userid)
-  }
-});
+  // }
+// });
+})
 
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
 function buildObject(t, p, y, w, r){

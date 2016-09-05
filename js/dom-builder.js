@@ -5,37 +5,40 @@ function addSearchToDom(data){
   //USED TO PREVENT APP BREAK WHEN RESULTS RETURNED IS
   // LESS THAN 3
   var times
-  if(data.totalResults < 9){
-    times = data.totalResults
-  }
-  else if(data.totalResults === 0){
-    Materialize.toast('Movie not found!', 4000)
-  }
-  else{
-    times = 9
-  }
-
-  for(var i =0; i < times; i++){
-    var poster
-    var movie = $(`<div class='movie'></div>`)
-    var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
-    if(data.Search[i].Poster === "N/A"){
-      poster = `<img src='../img/imgNotfound.jpg' class='poster'>`
+  if(data.Response !== 'False'){
+    if(data.totalResults < 9){
+      times = data.totalResults
+    }
+    else if(data.totalResults === 0){
+      Materialize.toast('Movie not found!', 4000)
     }
     else{
-      poster = `<img src='${data.Search[i].Poster}' class='poster'>`
+      times = 9
     }
-    var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
-    var add = `<p><a href='#' class='add' id='add'>Add to watchlist</a></p>`
 
-    movie.append(title + poster + year + add)
-    $('#homemovies').append(movie)
+    for(var i =0; i < times; i++){
+      var poster
+      var movie = $(`<div class='movie'></div>`)
+      var title = `<h5 class='movie_title'>${data.Search[i].Title}</h2>`
+      if(data.Search[i].Poster === "N/A"){
+        poster = `<img src='../img/imgNotfound.jpg' class='poster'>`
+      }
+      else{
+        poster = `<img src='${data.Search[i].Poster}' class='poster'>`
+      }
+      var year = `<p class='year'>Release Year: ${data.Search[i].Year}</p>`
+      var add = `<p><a href='#' class='add' id='add'>Add to watchlist</a></p>`
+
+      movie.append(title + poster + year + add)
+      $('#homemovies').append(movie)
+    }
   }
 }
 
 function addYoursToDom(data, id, uid){
   $('div#unwatchedmovies').html("")
   $('div#watchedmovies').html("")
+  console.log("RESPONSESSSEE", data.Response)
   var i = 0
   for(var key in data){
     if(data[key].userid === uid){
