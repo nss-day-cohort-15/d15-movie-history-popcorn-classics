@@ -1,6 +1,5 @@
 "use strict";
 
-// http:www.omdbapi.com/?s=Captain+America&r=json
 var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     dom =require('./dom-builder'),
     api = require('./api-interactions'),
@@ -15,6 +14,7 @@ $('.loginPage').hide()
 
 // HOME LOGIN AREA SPA EVENTS ////////////////
 $('#google_login').hide()
+$('#rval, #range, #r_label').hide()
 
 $('#google').on('click', function(){
   $('#google_login').show()
@@ -90,6 +90,7 @@ $(document).on('click', '#login', function(){
     $('.afterLogin, #unwatched, #watched, #favorite').show()
     $('.login').html('Logout')
     $('.login').attr('id', 'logout')
+    $('#rval, #range, #r_label').show()
 
     let loginToast = `<span><img class="login-img"
       src="${user.photoURL}"><h6>${user.displayName}
@@ -121,16 +122,44 @@ $(document).on('click', '#login', function(){
     })
 });
 
+$(document).on('input', '#range', function(){
+  $('#rval').html($('#range').val())
+  $('#unwatchedmovies, #homemovies').hide()
+  $('#watchedmovies').show()
+  $('#home, #unwatched').removeClass('active')
+  $('#watched').addClass('active')
+  var movieObj = {}
+
+  api.loadAllMovies()
+    .then(function(movies){
+      $('#watchedmovies').html("")
+      var val = $('#range').val()
+      let idArr = Object.keys(movies)
+      idArr.forEach(function(item){
+        movies[item].id = item
+      })
+      let deleteKeys = idArr
+      for(var key in movies){
+        if(movies[key].rating >= val){
+          console.log(val, movies[key].rating)
+          movieObj[key] = movies[key]
+          dom.addYoursToDom(movieObj, deleteKeys, userid)
+        }
+      }
+    })
+})
+
 $('#movieSearch').keypress(function(e) {
   if(e.which == 13) {
     $('div#homemovies').html("")
     $('#homemovies').show()
-    $('#watchedmovies, #unwatchedmovies, #fave').hide()
+    $('#watchedmovies, #unwatchedmovies').hide()
     $('#home').addClass('active')
     $('#watched, #unwatched, #favorite').removeClass('active')
     $('#crumbs').html('Home')
 
     var input = $('#movieSearch').val()
+    $('#movieSearch').val("")
     api.searchMovie(convertString(input))
       .then(function(data){
         dom.addSearchToDom(data)
@@ -151,12 +180,18 @@ function buildObject(t, p, y, w, r){
   }
   return songObj
 }
-
+//DELETES MOVIE WHEN 'X' IS CLICKED
 $(document).on('click', '.delete', function(){
   $(this).parent().remove()
+  let title = $(this).parent().children('.movie_title').text()
   let movieId = $(this).closest('.movie').attr('id')
   api.deleteMovie(movieId)
-  Materialize.toast('Movie deleted!', 4000)
+  if(title === 'Gladiator'){
+    Materialize.toast(`ARE YOU NOT ENTERTAINED?!`, 4000)
+  }
+  else{
+    Materialize.toast(`${title} was deleted!`, 4000)
+  }
 })
 // ADDS MOVIE TO UNWATCHED LIST WHEN CLICKED
 $(document).on('click', '.add', function(){

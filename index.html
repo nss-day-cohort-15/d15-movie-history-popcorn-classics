@@ -34,6 +34,7 @@
   <div class="afterLogin container">
     <div class="topBar">
       <h3 class="afterTitle">Popcorn Classics</h3>
+      <img src="./img/popcorn.png" class="emblem" id="emblem">
       <input type="text" id="movieSearch" class="movieSearch" placeholder="Movie Search: ">
       <a href="#"><span class="login" id="login">Login</span></a>
     </div>
@@ -42,8 +43,10 @@
       <span class="crumbs" id="crumbs">Home</span><br>
       <a href="#"><span class="home view active" id="home">Home</span></a>
       <a href="#"><span class="unwatched view" id="unwatched">Unwatched</span></a>
-      <a href="#"><span class="watched view" id="watched">Watched</span></a>
-      <a href="#"><span class="favorite view" id="favorite">Favorites</span></a>
+      <a href="#"><span class="watched view" id="watched">Watched</span></a><br>
+<!--       <a href="#"><span class="favorite view" id="favorite">Favorites</span></a> -->
+      <label for="range" id="r_label" class="r_label">Filter by rating: </label>
+      <input type="range" min="0" max="10" step=".5" value="0" id="range" class="range"><span class="rval" id="rval">0</span>
     </div>
 
     <div class="homemovies" id="homemovies">
