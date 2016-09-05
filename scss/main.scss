@@ -93,13 +93,13 @@ body{
     background-color: red !important;
   }
 
-  input[type=range]::-webkit-slider-runnable-track{
+  .range::-webkit-slider-runnable-track{
     background: black !important;
     height: 6px;
     border-radius: 20px;
   }
 
-  input[type=range]::-webkit-slider-thumb {
+  .range::-webkit-slider-thumb {
     background: red !important;
     width: 5%;
     box-shadow: 2px 2px 2px black;
@@ -146,6 +146,15 @@ body{
       color: red;
       font-size: 1.2em;
       margin-bottom: -3%;
+    }
+    .rating::-webkit-slider-thumb{
+      background: black !important;
+      border: 2px solid white;
+      padding: 6px;
+    }
+    .rating::-webkit-slider-runnable-track{
+      background: red !important;
+      height: 6px;
     }
   }
 
