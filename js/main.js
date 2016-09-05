@@ -7,12 +7,9 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
     logOutGoogle = require('./logOut'),
     userid,
     deleteKeys = []
-
-$('.loginPage').hide()
-// $('.afterLogin').hide()
-///////////////////////////////////////////////////
-
-// HOME LOGIN AREA SPA EVENTS ////////////////
+//////////////////////////////////////////////
+/////////HOME LOGIN AREA SPA EVENTS //////////
+//////////////////////////////////////////////
 $('#google_login').hide()
 $('#rval, #range, #r_label').hide()
 
@@ -25,60 +22,47 @@ $('#email').on('click', function(){
   $('#login_info').show()
   $('#google_login').hide()
 })
-/////////////////////////////////////////
-// AFTER LOGIN SPA PAGE EVENTS
+//////////////////////////////////////////////
+/////////AFTER LOGIN SPA PAGE EVENTS//////////
+//////////////////////////////////////////////
 $('#watchedmovies').hide()
 $('#unwatchedmovies').hide()
 $('#unwatched').hide()
 $('#watched').hide()
-$('#favorite').hide()
 
 $('#home').on('click', function(){
   $('#homemovies').show()
   $('#watchedmovies').hide()
   $('#unwatchedmovies').hide()
-  $('#fave').hide()
 
   $('#crumbs').html('Home')
   $('#home').addClass('active')
-  $('#watched, #unwatched, #favorite').removeClass('active')
+  $('#watched, #unwatched').removeClass('active')
 })
 
 $('#unwatched').on('click', function(){
   $('#unwatchedmovies').show()
   $('#watchedmovies').hide()
   $('#homemovies').hide()
-  $('#fave').hide()
 
   $('#crumbs').html('Unwatched')
   $('#unwatched').addClass('active')
-  $('#watched, #home, #favorite').removeClass('active')
+  $('#watched, #home').removeClass('active')
 })
 
 $('#watched').on('click', function(){
   $('#watchedmovies').show()
   $('#homemovies').hide()
   $('#unwatchedmovies').hide()
-  $('#fave').hide()
 
   $('#crumbs').html('Watched')
   $('#watched').addClass('active')
-  $('#home, #unwatched, #favorite').removeClass('active')
+  $('#home, #unwatched').removeClass('active')
 })
 
-$('#favorite').on('click', function(){
-  $('#watchedmovies').hide()
-  $('#homemovies').hide()
-  $('#unwatchedmovies').hide()
-  $('#fave').show()
-
-  $('#crumbs').html('Favorites')
-  $('#favorite').addClass('active')
-  $('#home, #unwatched, #watched').removeClass('active')
-})
-// ///////////////END AFTER LOGIN SPA EVENTS/////////////////////
-
-//GOOGLE LOGIN
+/////////END AFTER LOGIN SPA EVENTS/////////
+/////////////////////////////////////
+/////////GOOGLE LOGIN//////////
 $(document).on('click', '#login', function(){
   console.log("clicked auth")
   login()
@@ -87,7 +71,7 @@ $(document).on('click', '#login', function(){
     console.log(user.uid)
     userid = user.uid
     $('.loginPage').hide()
-    $('.afterLogin, #unwatched, #watched, #favorite').show()
+    $('.afterLogin, #unwatched, #watched').show()
     $('.login').html('Logout')
     $('.login').attr('id', 'logout')
     $('#rval, #range, #r_label').show()
@@ -96,7 +80,7 @@ $(document).on('click', '#login', function(){
       src="${user.photoURL}"><h6>${user.displayName}
       successfully logged in!</h6></span>`
     Materialize.toast(loginToast, 4000)
-
+    // USED FOR LOGGING OUT
     $(document).on('click', '#logout', function(){
       console.log('logout')
       let logoutToast = `<span><img class="login-img"
@@ -104,11 +88,13 @@ $(document).on('click', '#login', function(){
         successfully logged out!</h6></span>`
       Materialize.toast(logoutToast, 2000)
       logOutGoogle()
+      //RELOADS PAGE AFTER TIME OUT FOR BETTER UI
       setTimeout(function(){
         window.location.reload()
       }, 2000);
     })
-
+    //AFTER USER LOGS IN, LOAD ALL MOVIES AND ADD DELETE
+    //KEY ON MOVIE DIV FOR FUTURE DELETION
     api.loadAllMovies()
       .then(function(data){
         console.log('DATA', data)
@@ -122,6 +108,9 @@ $(document).on('click', '#login', function(){
     })
 });
 
+// MOVES CURRENT NAV AND DIV TO WATCHED MOVIES TAB
+// LOADS ALL MOVIES AND FILTERS BASED ON RANGE
+// INPUT RATING
 $(document).on('input', '#range', function(){
   $('#rval').html($('#range').val())
   $('#unwatchedmovies, #homemovies').hide()
@@ -148,25 +137,21 @@ $(document).on('input', '#range', function(){
       }
     })
 })
+
+//SEARCH'S OMDB DATABASE ON EACH TEXT INPUT
 $('#movieSearch').on('input', function(){
-// $('#movieSearch').keypress(function(e) {
-  // if(e.which == 13) {
     $('div#homemovies').html("")
     $('#homemovies').show()
     $('#watchedmovies, #unwatchedmovies').hide()
     $('#home').addClass('active')
-    $('#watched, #unwatched, #favorite').removeClass('active')
+    $('#watched, #unwatched').removeClass('active')
     $('#crumbs').html('Home')
 
     var input = $('#movieSearch').val()
-    // $('#movieSearch').val("")
     api.searchMovie(convertString(input))
       .then(function(data){
         dom.addSearchToDom(data)
       })
-  console.log('USERIDDDD', userid)
-  // }
-// });
 })
 
 // USED TO PASS AN OBJECT INTO ADD SONG FIREBASE FUNCTION
@@ -200,7 +185,10 @@ $(document).on('click', '.add', function(){
   let src = $(this).parent().parent().children('.poster').attr('src')
   let year = $(this).parent().parent().children('.year').text()
 
-  //PROMISE TO ADD TO FIREBASE UNWATCHED MOVIES TABLE GOES HERE
+  //IF USER IS SIGNED IN, ADD MOVIE TO FIREBASE,
+  //THEN RELOAD ALL USER MOVIES AND ASSIGN FIREBASE
+  //KEY TO EACH MOVIE CARD FOR LATER DELETION
+  //THEN ADD TO DOM
   if(userid){
     $(this).closest('.movie').remove()
     Materialize.toast(`${title}, was added to your unwatched list!`, 4000)
@@ -231,7 +219,7 @@ $(document).on('click', ".save", function(){
   var title = $(this).closest('.movie').children('.movie_title').text()
   var src = $(this).closest('.movie').children('.poster').attr('src')
   var year = $(this).closest('.movie').children('.year').text()
-
+  //DETERMINES TOAST MEASSAGE BASE ON ACTIVE NAV TAB
   if($('#unwatched').hasClass('active')){
     Materialize.toast(`${title} was added to your watched list, with a rating of ${rating}`, 4000)
   }
@@ -240,7 +228,10 @@ $(document).on('click', ".save", function(){
   }
   $(this).closest('.movie').remove()
 
-
+  //DELETES MOVIE FROM UNWATCHED LIST, SETS 'WATCHED'
+  //VALUE TO TRUE, THEN ADDS KEY TO MOVIE DIV FOR LATER
+  //DELETION, THEN RELOADS ALL MOVIES AND PLACES EACH
+  //MOVIE ACCORDING TO THEIR 'WATCHED' VALUE
   api.deleteMovie(cardId)
     .then(function(data){
       console.log('deleted')
@@ -254,7 +245,7 @@ $(document).on('click', ".save", function(){
               deleteKeys = idArr
               console.log(userid)
             })
-              dom.addYoursToDom(movie, idArr, userid)
+            dom.addYoursToDom(movie, idArr, userid)
         })
       })
     })
