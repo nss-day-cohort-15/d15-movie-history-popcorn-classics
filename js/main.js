@@ -122,16 +122,44 @@ $(document).on('click', '#login', function(){
     })
 });
 
+$(document).on('input', '#range', function(){
+  $('#rval').html($('#range').val())
+  $('#unwatchedmovies, #homemovies').hide()
+  $('#watchedmovies').show()
+  $('#home, #unwatched').removeClass('active')
+  $('#watched').addClass('active')
+  var movieObj = {}
+
+  api.loadAllMovies()
+    .then(function(movies){
+      $('#watchedmovies').html("")
+      var val = $('#range').val()
+      let idArr = Object.keys(movies)
+      idArr.forEach(function(item){
+        movies[item].id = item
+      })
+      let deleteKeys = idArr
+      for(var key in movies){
+        if(movies[key].rating >= val){
+          console.log(val, movies[key].rating)
+          movieObj[key] = movies[key]
+          dom.addYoursToDom(movieObj, deleteKeys, userid)
+        }
+      }
+    })
+})
+
 $('#movieSearch').keypress(function(e) {
   if(e.which == 13) {
     $('div#homemovies').html("")
     $('#homemovies').show()
-    $('#watchedmovies, #unwatchedmovies, #fave').hide()
+    $('#watchedmovies, #unwatchedmovies').hide()
     $('#home').addClass('active')
     $('#watched, #unwatched, #favorite').removeClass('active')
     $('#crumbs').html('Home')
 
     var input = $('#movieSearch').val()
+    $('#movieSearch').val("")
     api.searchMovie(convertString(input))
       .then(function(data){
         dom.addSearchToDom(data)

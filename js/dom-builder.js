@@ -36,11 +36,9 @@ function addSearchToDom(data){
 function addYoursToDom(data, id, uid){
   $('div#unwatchedmovies').html("")
   $('div#watchedmovies').html("")
-  console.log('UIDDDDDDDDDD', uid)
   var i = 0
   for(var key in data){
     if(data[key].userid === uid){
-      console.log('TRUE')
       var your_movie = $(`<div class='movie' id='${id[i]}'></div`)
       var destroy = `<span class='delete glyphicon glyphicon-remove'></span>`
       var title = `<h5 class='movie_title'>${data[key].title}</h2>`
@@ -52,17 +50,17 @@ function addYoursToDom(data, id, uid){
 
       your_movie.append(destroy + title + poster + year + rate + add)
 
-      if(data[key].watched === false && data[key].rating < 1){
+      if(data[key].watched === false){
         $('#unwatchedmovies').append(your_movie)
         console.log('unwatched')
       }
-      else if(data[key].watched === true || data[key].rating > 0){
+      else if(data[key].watched === true){
         $('#watchedmovies').append(your_movie)
         console.log('watched')
       }
     }
-  i++
- }
+    i++
+  }
 
   $('.ratings').on('input', function(){
     $(this).children('.r_value').html($('#rating', this).val())
