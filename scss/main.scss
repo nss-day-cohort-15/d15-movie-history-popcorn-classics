@@ -121,6 +121,7 @@ body{
     background-color: white;
     border: 2px solid black;
     border-radius: 50px;
+    box-shadow: 2px 2px 2px black;
     padding: .4%;
   }
 
@@ -171,6 +172,10 @@ body{
     margin-bottom: -7%;
     display: inline-block;
     font-family: 'Exo', sans-serif;
+  }
+
+  .afterTitle:hover{
+    color: white;
   }
 
   .instruction{
