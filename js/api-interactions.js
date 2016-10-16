@@ -8,7 +8,7 @@ var $ = require('../bower_components/jquery/dist/jquery.min.js'),
 function addMovie(obj){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: 'https://popcorn-classics.firebaseio.com/movies.json',
+      url: 'https://movie-history-56b41.firebaseio.com/movies.json',
       type: 'POST',
       data: JSON.stringify(obj),
       dataType: 'json'
@@ -21,7 +21,7 @@ function addMovie(obj){
 function loadAllMovies(uid){
   return new Promise(function(resolve, reject){
     $.ajax({
-    url: 'https://popcorn-classics.firebaseio.com/movies.json',
+    url: 'https://movie-history-56b41.firebaseio.com/movies.json',
     type: 'GET',
     dataType: 'json'
     }).done(function(data){
@@ -33,7 +33,7 @@ function loadAllMovies(uid){
 let searchMovie = function(title) {
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: `http://www.omdbapi.com/?apikey=a2ace4c2&s=${title}&r=json`
+      url: `https://www.omdbapi.com/?apikey=a2ace4c2&s=${title}&r=json`
     }).done(function(data){
         resolve(data)
         console.log(data);
@@ -47,7 +47,7 @@ let searchMovie = function(title) {
 let deleteMovie = function(movieId){
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: `https://popcorn-classics.firebaseio.com/movies/${movieId}.json`, // this is the wrong url
+      url: `https://movie-history-56b41.firebaseio.com/movies/${movieId}.json`,
       type: 'DELETE'
     }).done(function(movieData){
         resolve(movieData);
@@ -57,4 +57,19 @@ let deleteMovie = function(movieId){
   });
 };
 
-  module.exports = {searchMovie, loadAllMovies, addMovie, deleteMovie};
+let updateRating = function(movieId, movieObj){
+  return new Promise(function(resolve, reject){
+    $.ajax({
+      url: `https://movie-history-56b41.firebaseio.com/movies/${movieId}.json`,
+      type: 'PATCH',
+      data: JSON.stringify(movieObj)
+    }).done(function(data){
+      console.log(data)
+      resolve(data)
+    }).fail(function(failure){
+      reject(failure)
+    })
+  })
+}
+
+  module.exports = {searchMovie, loadAllMovies, addMovie, deleteMovie, updateRating};

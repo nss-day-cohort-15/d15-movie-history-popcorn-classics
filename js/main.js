@@ -234,9 +234,9 @@ $(document).on('click', ".save", function(){
   //MOVIE ACCORDING TO THEIR 'WATCHED' VALUE
   api.deleteMovie(cardId)
     .then(function(data){
-      console.log('deleted')
-      api.addMovie(buildObject(title, src, year, true, rating))
+      api.updateRating(cardId, buildObject(title, src, year, true, rating))
       .then(function(movie){
+        $('.watchedmovies').html("");
         api.loadAllMovies()
           .then(function(movie){
             var idArr = Object.keys(movie)
